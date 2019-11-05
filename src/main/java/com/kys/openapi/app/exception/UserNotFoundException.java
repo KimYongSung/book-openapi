@@ -1,7 +1,6 @@
-package com.kys.openapi.exception.user;
+package com.kys.openapi.app.exception;
 
-import com.kys.openapi.exception.ErrorCode;
-import com.kys.openapi.exception.OpenApiException;
+import com.kys.openapi.app.constants.ErrorCode;
 
 /**
  * 고객 정보가 없을 경우 발생

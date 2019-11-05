@@ -1,6 +1,6 @@
 package com.kys.openapi.user.domain;
 
-import com.kys.openapi.user.constants.UserStatus;
+import com.kys.openapi.app.constants.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

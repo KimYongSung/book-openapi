@@ -1,5 +1,6 @@
-package com.kys.openapi.exception;
+package com.kys.openapi.app.exception;
 
+import com.kys.openapi.app.constants.ErrorCode;
 import lombok.Getter;
 import lombok.ToString;
 

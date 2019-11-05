@@ -23,7 +23,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final DateTimePath<java.time.LocalDateTime> regDt = createDateTime("regDt", java.time.LocalDateTime.class);
 
-    public final EnumPath<com.kys.openapi.user.constants.UserStatus> status = createEnum("status", com.kys.openapi.user.constants.UserStatus.class);
+    public final EnumPath<com.kys.openapi.app.constants.UserStatus> status = createEnum("status", com.kys.openapi.app.constants.UserStatus.class);
 
     public final StringPath userId = createString("userId");
 
