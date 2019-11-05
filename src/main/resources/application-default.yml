@@ -1,0 +1,35 @@
+spring:
+  mvc:
+    static-path-pattern: /static/**
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    dirverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    open-in-view: false
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      path: /h2-consloe
+      enabled: true
+      settings:
+        trace: false
+        web-allow-others: false
+
+logging:
+  level:
+    root: INFO
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
