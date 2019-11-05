@@ -1,4 +1,4 @@
-# SpringBoot + React 설정
+# 카카오, 네이버 OpenAPI를 활용한 간단한 서비스
 
 * springboot, React 구성
   * Springboot은 gradle 기반
