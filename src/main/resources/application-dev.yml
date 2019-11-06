@@ -33,11 +33,6 @@ spring:
 logging:
   level:
     root: INFO
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
 
 thirdparty:
   network:

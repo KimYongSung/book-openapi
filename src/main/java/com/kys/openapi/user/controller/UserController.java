@@ -24,7 +24,7 @@ public class UserController {
      * @param userDTO
      * @return
      */
-    @PostMapping(name = "/join/user")
+    @PostMapping(value = "/join/user")
     public ResponseEntity<Response> joinUser(@Valid UserDTO userDTO){
         return ResponseEntity.ok(userService.joinUser(userDTO));
     }

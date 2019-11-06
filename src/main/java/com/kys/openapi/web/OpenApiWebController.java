@@ -15,7 +15,7 @@ public class OpenApiWebController {
      * @param model
      * @return
      */
-    @GetMapping("/")
+    @GetMapping(value="/")
     public String index(Model model){
         return "index";
     }
