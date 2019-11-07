@@ -1,8 +1,8 @@
 package com.kys.openapi.thirdparty.kakao.search.book;
 
+import com.kys.openapi.thirdparty.config.QueryString;
 import com.kys.openapi.thirdparty.kakao.code.BookTarget;
 import com.kys.openapi.thirdparty.kakao.code.SearchSort;
-import com.kys.openapi.thirdparty.config.QueryString;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
