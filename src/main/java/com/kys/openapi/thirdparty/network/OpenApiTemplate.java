@@ -1,14 +1,8 @@
 package com.kys.openapi.thirdparty.network;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -17,30 +11,29 @@ import java.util.Objects;
 /**
  * OpenAPI 공통 송수신 처리
  */
-public abstract class AbstractSendRecv {
+public abstract class OpenApiTemplate {
 
     protected RestTemplate restTemplate;
 
-    public AbstractSendRecv(RestTemplateBuilder builder) {
-        this.restTemplate = builder.interceptors(loggingInterceptor())
-                                   .build();
+    public OpenApiTemplate(RestTemplateBuilder builder) {
+        this.restTemplate = build(builder);
     }
 
     /**
-     * 로킹용 interceptor 생성
-     * @return
+     * RestTemplate 추가 설정 및 build
+     * @param builder 기본설정된 RestTemplateBuilder
      */
-    protected abstract ClientHttpRequestInterceptor loggingInterceptor();
+    protected abstract RestTemplate build(RestTemplateBuilder builder);
 
     /**
      * Header에 OpenAPI 인증 정보 추가
-     * @param headers
+     * @param headers 헤더에 OpenAPI 서버별 인증정보 설정
      */
     protected abstract void addAuthorization(HttpHeaders headers);
 
     /**
      * 기본 Header 생성
-     * @return
+     * @return OpenAPI 서버 별로 필요한 헤더 정보 생성
      */
     protected abstract HttpHeaders makeHeaders();
 
@@ -49,9 +42,7 @@ public abstract class AbstractSendRecv {
      * @param url   요청 URL
      * @param t     요청 정보
      * @param clazz 응답 클래스
-     * @param <T>
-     * @param <R>
-     * @return
+     * @returns
      */
     public <T extends QueryString, R> ResponseEntity<R> get(ApiUrl url, T t, Class<R> clazz, Objects... uriVariables){
         return exchange(makeGetUrl(url, t), HttpMethod.GET, null, makeHeaders(), clazz, uriVariables);
@@ -62,8 +53,6 @@ public abstract class AbstractSendRecv {
      * @param url   요청 URL
      * @param t     요청 정보
      * @param clazz 응답 클래스
-     * @param <T>
-     * @param <R>
      * @return
      */
     public <T, R> ResponseEntity<R> post(ApiUrl url, T t, Class<R> clazz, Objects... uriVariables){
@@ -75,8 +64,6 @@ public abstract class AbstractSendRecv {
      * @param url           요청 URL
      * @param t             요청 정보
      * @param responseType  응답 클래스
-     * @param <T>
-     * @param <R>
      * @return
      */
     public <T extends QueryString, R> ResponseEntity<R> get(ApiUrl url, T t, ParameterizedTypeReference<R> responseType, Objects... uriVariables){
@@ -88,8 +75,6 @@ public abstract class AbstractSendRecv {
      * @param url           요청 URL
      * @param t             요청 정보
      * @param responseType  응답 클래스
-     * @param <T>
-     * @param <R>
      * @return
      */
     public <T, R> ResponseEntity<R> post(ApiUrl url, T t, ParameterizedTypeReference<R> responseType, Objects... uriVariables){
@@ -104,13 +89,11 @@ public abstract class AbstractSendRecv {
      * @param headers       헤더 정보
      * @param clazz         응답 class
      * @param uriVariables  uri 파라미터 정보
-     * @param <T> 요청 클래스
-     * @param <R> 응답 클래스
      * @return
      */
-    private <T, R> ResponseEntity<R> exchange(String url, HttpMethod method, T t, HttpHeaders headers, Class<R> clazz, Objects... uriVariables){
+    public <T, R> ResponseEntity<R> exchange(String url, HttpMethod method, T t, HttpHeaders headers, Class<R> clazz, Objects... uriVariables){
         addAuthorization(headers);
-        return restTemplate.exchange(url, method, getHttpEntity(t, headers), clazz, uriVariables);
+        return restTemplate.exchange(url, method, new HttpEntity<>(t, headers), clazz, uriVariables);
     }
 
     /**
@@ -121,22 +104,22 @@ public abstract class AbstractSendRecv {
      * @param headers       헤더 정보
      * @param responseType  응답 class
      * @param uriVariables  uri 파라미터 정보
-     * @param <T> 요청 클래스
-     * @param <R> 응답 클래스
      * @return
      */
-    private <T, R> ResponseEntity<R> exchange(String url, HttpMethod method, T t, HttpHeaders headers, ParameterizedTypeReference<R> responseType, Objects... uriVariables){
+    public <T, R> ResponseEntity<R> exchange(String url, HttpMethod method, T t, HttpHeaders headers, ParameterizedTypeReference<R> responseType, Objects... uriVariables){
         addAuthorization(headers);
-        return restTemplate.exchange(url, method, getHttpEntity(t, headers), responseType, uriVariables);
+        return restTemplate.exchange(url, method, new HttpEntity<>(t, headers), responseType, uriVariables);
     }
 
-    private <T> HttpEntity<T> getHttpEntity(T t, HttpHeaders headers) {
-        return Objects.isNull(t) ? new HttpEntity<>(headers) : new HttpEntity<>(t, headers);
-    }
-
+    /**
+     * Get 메소드일때 요청 url 생성
+     * @param url           openApi url 정보
+     * @param queryString   openApi 파라미터
+     * @return
+     */
     private String makeGetUrl(ApiUrl url, QueryString queryString){
-        return UriComponentsBuilder.fromHttpUrl(url.getFullUrl())
-                                   .query(queryString.toQueryString())
-                                   .toUriString();
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url.getFullUrl());
+        return queryString.toUrl(builder);
     }
+
 }

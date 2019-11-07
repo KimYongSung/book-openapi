@@ -7,4 +7,6 @@ public interface ApiUrl {
      * @return
      */
     String getFullUrl();
+
+
 }

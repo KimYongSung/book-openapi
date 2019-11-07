@@ -4,9 +4,15 @@ import com.kys.openapi.thirdparty.network.ApiUrl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 카카오 API Endpoint 관리
+ */
 @AllArgsConstructor
-public enum KakaoApi implements ApiUrl {
+public enum KakaoOpenApi implements ApiUrl {
 
+    /**
+     * 책 검색
+     */
     BOOK_SEARCH("/v3/search/book")
     ;
 

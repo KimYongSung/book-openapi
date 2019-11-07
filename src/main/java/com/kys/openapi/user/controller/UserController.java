@@ -28,4 +28,5 @@ public class UserController {
     public ResponseEntity<Response> joinUser(@Valid UserDTO userDTO){
         return ResponseEntity.ok(userService.joinUser(userDTO));
     }
+    
 }

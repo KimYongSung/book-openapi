@@ -9,6 +9,7 @@ import lombok.*;
 @ToString
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class SearchMeta {
 
     @JsonProperty(value = "is_end")
@@ -20,10 +21,4 @@ public class SearchMeta {
     @JsonProperty(value = "total_count")
     private int totalCount;
 
-    @Builder
-    public SearchMeta(boolean isEnd, int pageableCount, int totalCount) {
-        this.isEnd = isEnd;
-        this.pageableCount = pageableCount;
-        this.totalCount = totalCount;
-    }
 }

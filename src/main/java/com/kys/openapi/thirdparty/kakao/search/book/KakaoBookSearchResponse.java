@@ -10,9 +10,9 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class KakaoBookResponse {
+public class KakaoBookSearchResponse {
 
     private SearchMeta meta;
 
-    private List<KakaoBookDocument> documents;
+    private List<KakaoBookSearchDocument> documents;
 }

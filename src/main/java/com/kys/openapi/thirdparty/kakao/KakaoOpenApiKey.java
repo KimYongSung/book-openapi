@@ -1,6 +1,5 @@
 package com.kys.openapi.thirdparty.kakao;
 
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.InitializingBean;
@@ -11,11 +10,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-
+/**
+ * 카카오 OpenAPI Key 관리
+ */
 @Component
 @ConfigurationProperties(prefix = "thirdparty.kakao")
 @NoArgsConstructor
-public class KakaoApiKey implements InitializingBean {
+public class KakaoOpenApiKey implements InitializingBean {
 
     @Setter
     private String restApiKey;
@@ -25,23 +26,30 @@ public class KakaoApiKey implements InitializingBean {
 
     private String key;
 
-    public KakaoApiKey(String restApiKey, String keyPrefix) {
-        this.restApiKey = restApiKey;
+    public KakaoOpenApiKey(String restApiKey, String keyPrefix) {
+        this.key = restApiKey;
         this.keyPrefix = keyPrefix;
     }
 
     @Override
     public void afterPropertiesSet() {
-        this.key = String.format("%s %s", keyPrefix, restApiKey);
+        this.key = String.format("%s %s", keyPrefix, key);
     }
 
+    /**
+     * 카카오 OpenAPI 요청용 Http 헤더 생성
+     * @return
+     */
     public HttpHeaders makeHeaders(){
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, key);
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
         return headers;
     }
 
+    /**
+     * Http 헤더에 카카오 인증 정보 추가
+     * @param headers
+     */
     public void addKakaoAuthorization(HttpHeaders headers){
         if(Objects.isNull(headers.get(HttpHeaders.AUTHORIZATION))){
             headers.add(HttpHeaders.AUTHORIZATION, key);

@@ -10,7 +10,7 @@ public class StringUtil {
     /**
      * 문자열 NULL or Empty 여부
      * @param str
-     * @return
+     * @return null이거나 공백이면 true
      */
     public static boolean isNullOrEmpty(String str) {
         return Objects.isNull(str) || str.isEmpty();
@@ -22,6 +22,14 @@ public class StringUtil {
         return str;
     }
 
+    /**
+     * 문자열이 NULL or Empty 여부
+     * @param str
+     * @return null이거나 공백이면 false
+     */
+    public static boolean nonNullOrNonEmpty(String str){
+        return !isNullOrEmpty(str);
+    }
     /**
      * 정수 여부 확인
      *

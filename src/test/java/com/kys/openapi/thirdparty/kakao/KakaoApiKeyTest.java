@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class KakaoApiKeyTest {
 
     @Autowired
-    private KakaoApiKey apiKey;
+    private KakaoOpenApiKey apiKey;
 
     @Test
     public void 카카오_APIKEY_PROPERTIES_정보확인(){

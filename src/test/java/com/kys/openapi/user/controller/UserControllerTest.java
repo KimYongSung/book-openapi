@@ -39,15 +39,36 @@ public class UserControllerTest {
         given(userService.joinUser(eq(userDTO))).willReturn(Response.success());
 
         // when
-        final ResultActions actions = mockMvc.perform(post("")
-                                                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                                                     .param("userId", "")
-                                                     .param("userPwd", ""))
-                                                     .andDo(MockMvcResultHandlers.print());
+        final ResultActions actions = mockMvc.perform(post("/join/user")
+                                             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                             .param("userId", "")
+                                             .param("userPwd", ""))
+                                             .andDo(MockMvcResultHandlers.print());
 
         // then
         actions.andExpect(status().isOk())
                .andExpect(jsonPath("code").value(ErrorCode.CD_S001.getCode()))
                .andExpect(jsonPath("message").value(ErrorCode.CD_S001.getMessage()));
+    }
+
+    @Test
+    public void 성공() throws Exception {
+        // given
+        String param = "kys0213";
+        UserDTO userDTO = new UserDTO(param, param);
+
+        given(userService.joinUser(eq(userDTO))).willReturn(Response.success());
+
+        // when
+        final ResultActions actions = mockMvc.perform(post("/join/user")
+                                             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                             .param("userId", param)
+                                             .param("userPwd", param))
+                                             .andDo(MockMvcResultHandlers.print());
+
+        // then
+        actions.andExpect(status().isOk())
+               .andExpect(jsonPath("code").value(ErrorCode.CD_0000.getCode()))
+               .andExpect(jsonPath("message").value(ErrorCode.CD_0000.getMessage()));
     }
 }

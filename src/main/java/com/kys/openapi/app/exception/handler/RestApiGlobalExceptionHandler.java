@@ -16,8 +16,14 @@ public class RestApiGlobalExceptionHandler {
 
     @ExceptionHandler(value = BindException.class)
     @ResponseBody
-    public Response validationError(BindException e){
+    public Response handler(BindException e){
         return Response.error(ErrorCode.CD_S001);
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public Response handler(Exception e){
+        return Response.error(ErrorCode.CD_S999);
     }
 
 }
