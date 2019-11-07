@@ -1,4 +1,4 @@
-package com.kys.openapi.thirdparty.network;
+package com.kys.openapi.thirdparty.config;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

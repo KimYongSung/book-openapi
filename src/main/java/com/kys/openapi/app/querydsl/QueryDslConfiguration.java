@@ -1,4 +1,4 @@
-package com.kys.openapi.app.config;
+package com.kys.openapi.app.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;

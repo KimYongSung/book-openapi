@@ -1,13 +1,12 @@
 package com.kys.openapi.user.domain.repository;
 
+import com.kys.openapi.user.domain.QUser;
 import com.kys.openapi.user.domain.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-
-import static com.kys.openapi.user.domain.QUser.user;
 
 @Repository
 public class UserRepositorySupport extends QuerydslRepositorySupport {
@@ -26,9 +25,24 @@ public class UserRepositorySupport extends QuerydslRepositorySupport {
      * @return
      */
     public Optional<User> findByUserIdAndUserPwd(String id, String pwd){
-        return Optional.ofNullable(queryFactory.selectFrom(user)
-                                               .where(user.userId.eq(id)
-                                               .and(user.userPwd.eq(pwd)))
-                                               .fetchFirst());
+        User user = queryFactory.selectFrom(QUser.user)
+                                .where(QUser.user.userId.eq(id)
+                                .and(QUser.user.userPwd.eq(pwd)))
+                                .fetchFirst();
+        return Optional.ofNullable(user);
+    }
+
+    /**
+     * ID와 비밀번호로 고객정보 조회
+     * @param id    고객 ID
+     * @return
+     */
+    public Optional<User> findByUserId(String id){
+
+        User user = queryFactory.selectFrom(QUser.user)
+                                .where(QUser.user.userId.eq(id))
+                                .fetchFirst();
+
+        return Optional.ofNullable(user);
     }
 }

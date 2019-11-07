@@ -1,6 +1,6 @@
 package com.kys.openapi.thirdparty.kakao;
 
-import com.kys.openapi.thirdparty.network.ApiUrl;
+import com.kys.openapi.thirdparty.config.ApiUrl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

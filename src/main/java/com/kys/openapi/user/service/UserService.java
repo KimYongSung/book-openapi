@@ -14,4 +14,11 @@ public interface UserService {
      */
     @Transactional
     Response joinUser(UserDTO dto);
+
+    /**
+     * 로그인
+     * @param dto
+     * @return
+     */
+    Response loginUser(UserDTO dto);
 }

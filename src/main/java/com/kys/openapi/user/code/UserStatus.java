@@ -1,4 +1,4 @@
-package com.kys.openapi.app.constants;
+package com.kys.openapi.user.code;
 
 /**
  * 고객 상태 관리

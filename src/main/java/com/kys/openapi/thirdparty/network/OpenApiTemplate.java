@@ -1,8 +1,13 @@
 package com.kys.openapi.thirdparty.network;
 
+import com.kys.openapi.thirdparty.config.ApiUrl;
+import com.kys.openapi.thirdparty.config.QueryString;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 

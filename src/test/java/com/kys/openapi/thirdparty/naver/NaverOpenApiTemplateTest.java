@@ -1,14 +1,13 @@
 package com.kys.openapi.thirdparty.naver;
 
-import com.kys.openapi.app.config.RestTemplateConfig;
+import com.kys.openapi.thirdparty.config.NetWorkConfig;
+import com.kys.openapi.thirdparty.config.RestTemplateConfig;
 import com.kys.openapi.thirdparty.naver.search.book.NaverBookDetailSearchRequest;
 import com.kys.openapi.thirdparty.naver.search.book.NaverBookItem;
 import com.kys.openapi.thirdparty.naver.search.book.NaverBookSearchRequest;
 import com.kys.openapi.thirdparty.naver.search.book.NaverBookSearchResponse;
-import com.kys.openapi.thirdparty.network.NetWorkConfig;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;

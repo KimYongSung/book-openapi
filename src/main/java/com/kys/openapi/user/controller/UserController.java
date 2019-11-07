@@ -6,6 +6,8 @@ import com.kys.openapi.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -15,6 +17,7 @@ import javax.validation.Valid;
  */
 @RestController
 @AllArgsConstructor
+@RequestMapping(value = "/user")
 public class UserController {
 
     private UserService userService;
@@ -24,8 +27,18 @@ public class UserController {
      * @param userDTO
      * @return
      */
-    @PostMapping(value = "/join/user")
-    public ResponseEntity<Response> joinUser(@Valid UserDTO userDTO){
+    @PostMapping(value = "/join")
+    public ResponseEntity<Response> joinUser(@RequestBody @Valid UserDTO userDTO){
+        return ResponseEntity.ok(userService.joinUser(userDTO));
+    }
+
+    /**
+     * 회원 가입 처리
+     * @param userDTO
+     * @return
+     */
+    @PostMapping(value = "/login")
+    public ResponseEntity<Response> loginUser(@RequestBody @Valid UserDTO userDTO){
         return ResponseEntity.ok(userService.joinUser(userDTO));
     }
     

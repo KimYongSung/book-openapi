@@ -1,6 +1,6 @@
 package com.kys.openapi.thirdparty;
 
-import com.kys.openapi.thirdparty.network.NetWorkConfig;
+import com.kys.openapi.thirdparty.config.NetWorkConfig;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

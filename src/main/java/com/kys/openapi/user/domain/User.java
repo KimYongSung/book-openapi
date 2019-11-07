@@ -1,6 +1,6 @@
 package com.kys.openapi.user.domain;
 
-import com.kys.openapi.app.constants.UserStatus;
+import com.kys.openapi.user.code.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @Entity
-@Table(name = "BOOK_USER", indexes = {@Index(name = "IDX_BOOK_USER_01", columnList = "USER_ID, USER_PWD")})
+@Table(name = "BOOK_USER", indexes = {@Index(name = "IDX_BOOK_USER_01", columnList = "USER_ID")})
 public class User {
 
     @Id
@@ -27,7 +27,7 @@ public class User {
     @Column(name = "USER_ID", length = 64, nullable = false)
     private String userId;
 
-    @Column(name = "USER_PWD", length = 128, nullable = false)
+    @Column(name = "USER_PWD", length = 256, nullable = false)
     private String userPwd;
 
     @Column(name = "USER_STATUS", length = 10)

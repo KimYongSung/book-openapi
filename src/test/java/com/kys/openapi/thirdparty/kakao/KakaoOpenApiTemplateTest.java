@@ -1,15 +1,14 @@
 package com.kys.openapi.thirdparty.kakao;
 
-import com.kys.openapi.app.config.RestTemplateConfig;
+import com.kys.openapi.thirdparty.config.NetWorkConfig;
+import com.kys.openapi.thirdparty.config.RestTemplateConfig;
 import com.kys.openapi.thirdparty.kakao.code.SearchSort;
 import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchDocument;
 import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchRequest;
 import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchResponse;
 import com.kys.openapi.thirdparty.kakao.search.common.SearchMeta;
-import com.kys.openapi.thirdparty.network.NetWorkConfig;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;

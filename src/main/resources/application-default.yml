@@ -51,3 +51,6 @@ thirdparty:
   naver:
     client-id: jCFIRiVPohq6KLt1VNcY
     secret: IyL2fs4lVA
+
+jwt:
+  secret: aqaxvad!@#

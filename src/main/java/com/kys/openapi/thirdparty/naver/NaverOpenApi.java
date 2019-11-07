@@ -1,6 +1,6 @@
 package com.kys.openapi.thirdparty.naver;
 
-import com.kys.openapi.thirdparty.network.ApiUrl;
+import com.kys.openapi.thirdparty.config.ApiUrl;
 
 /**
  * 네이버 openApi end point 관리

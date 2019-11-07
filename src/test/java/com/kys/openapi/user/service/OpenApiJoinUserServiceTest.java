@@ -3,6 +3,7 @@ package com.kys.openapi.user.service;
 import com.kys.openapi.app.constants.ErrorCode;
 import com.kys.openapi.app.exception.AlreadyUserException;
 import com.kys.openapi.app.result.Response;
+import com.kys.openapi.security.jwt.JwtTokenProvider;
 import com.kys.openapi.user.domain.repository.UserRepository;
 import com.kys.openapi.user.domain.repository.UserRepositorySupport;
 import com.kys.openapi.user.dto.UserDTO;
@@ -11,6 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -29,11 +32,20 @@ public class OpenApiJoinUserServiceTest {
     @Mock
     private UserRepositorySupport userRepositorySupport;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    @Mock
+    private AuthenticationManager authenticationManager;
+
+    @Mock
+    private JwtTokenProvider jwtTokenProvider;
+
     private OpenApiUserService userService;
 
     @Before
     public void init(){
-        userService = new OpenApiUserService(userRepository, userRepositorySupport);
+        userService = new OpenApiUserService(userRepository, userRepositorySupport, passwordEncoder, authenticationManager, jwtTokenProvider);
     }
 
     public UserDTO makeUser(){

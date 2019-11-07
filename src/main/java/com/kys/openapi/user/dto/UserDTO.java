@@ -17,7 +17,7 @@ public class UserDTO {
     private String userId;
 
     @NotEmpty
-    @Length(max = 20)
+    @Length(max = 30)
     private String userPwd;
 
     @Builder

@@ -1,6 +1,6 @@
 package com.kys.openapi.thirdparty.naver.search.book;
 
-import com.kys.openapi.thirdparty.network.QueryString;
+import com.kys.openapi.thirdparty.config.QueryString;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

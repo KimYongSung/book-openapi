@@ -1,5 +1,6 @@
 package com.kys.openapi.user.domain;
 
+import com.kys.openapi.user.code.UserStatus;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;
 import com.querydsl.core.types.dsl.*;
@@ -23,7 +24,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final DateTimePath<java.time.LocalDateTime> regDt = createDateTime("regDt", java.time.LocalDateTime.class);
 
-    public final EnumPath<com.kys.openapi.app.constants.UserStatus> status = createEnum("status", com.kys.openapi.app.constants.UserStatus.class);
+    public final EnumPath<UserStatus> status = createEnum("status", UserStatus.class);
 
     public final StringPath userId = createString("userId");
 
