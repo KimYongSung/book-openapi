@@ -1,7 +1,9 @@
 package com.kys.openapi.security.jwt;
 
-import com.kys.openapi.security.exception.InvalidJwtAuthenticationException;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpHeaders;
@@ -20,11 +22,14 @@ import java.util.Objects;
 @ConfigurationProperties(prefix = "jwt")
 public class JwtTokenProvider {
 
-    public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
+    public static final long DEFAULT = 1000 * 60 * 60;
     public static final String BEARER_ = "Bearer ";
 
     @Setter
     private String secret;
+
+    @Setter
+    private Long validity = DEFAULT;
 
     private UserDetailsService userDetailsService;
 
@@ -38,7 +43,7 @@ public class JwtTokenProvider {
         claims.put("roles", roles);
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + JWT_TOKEN_VALIDITY);
+        Date validity = new Date(now.getTime() + this.validity);
 
         return Jwts.builder()
                    .setClaims(claims)
@@ -53,6 +58,11 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
+    /**
+     * 토큰에서 userNo 확인
+     * @param token
+     * @return
+     */
     public String getUsername(String token) {
         return Jwts.parser()
                    .setSigningKey(secret)
@@ -61,6 +71,11 @@ public class JwtTokenProvider {
                    .getSubject();
     }
 
+    /**
+     * 토큰 정보 확인
+     * @param req
+     * @return
+     */
     public String resolveToken(HttpServletRequest req) {
 
         String bearerToken = req.getHeader(HttpHeaders.AUTHORIZATION);
@@ -72,20 +87,21 @@ public class JwtTokenProvider {
         return null;
     }
 
+    /**
+     * 토큰 검증
+     * @param token
+     * @return
+     */
     public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser()
-                                     .setSigningKey(secret)
-                                     .parseClaimsJws(token);
+        Jws<Claims> claims = Jwts.parser()
+                                 .setSigningKey(secret)
+                                 .parseClaimsJws(token);
 
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
-
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
+        if (claims.getBody().getExpiration().before(new Date())) {
+            return false;
         }
+
+        return true;
     }
 
 }

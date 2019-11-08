@@ -1,6 +1,7 @@
 package com.kys.openapi.app.exception;
 
 import com.kys.openapi.app.constants.ErrorCode;
+import com.kys.openapi.app.result.Response;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -20,6 +21,10 @@ public class OpenApiException extends RuntimeException {
     public OpenApiException(ErrorCode errorCode, Throwable cause) {
         super(cause);
         this.errorCode = errorCode;
+    }
+
+    public Response toResponse(){
+        return Response.error(errorCode);
     }
 
 }

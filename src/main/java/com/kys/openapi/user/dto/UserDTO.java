@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -24,6 +25,10 @@ public class UserDTO {
     public UserDTO(String userId, String userPwd) {
         this.userId = userId;
         this.userPwd = userPwd;
+    }
+
+    public void encodePassword(PasswordEncoder encoder){
+        this.userPwd = encoder.encode(this.userPwd);
     }
 
     public User toEntity(){

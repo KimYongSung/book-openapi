@@ -1,5 +1,6 @@
 package com.kys.openapi.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
@@ -9,13 +10,18 @@ public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilt
 
     private JwtTokenProvider jwtTokenProvider;
 
-    public JwtConfigurer(JwtTokenProvider jwtTokenProvider) {
+    private ObjectMapper objectMapper;
+
+
+    public JwtConfigurer(JwtTokenProvider jwtTokenProvider, ObjectMapper objectMapper) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.objectMapper = objectMapper;
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        JwtTokenFilter customFilter = new JwtTokenFilter(jwtTokenProvider);
-        http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider, objectMapper), UsernamePasswordAuthenticationFilter.class)
+        ;
     }
 }

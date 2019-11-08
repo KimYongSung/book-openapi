@@ -2,11 +2,13 @@ package com.kys.openapi.app.result;
 
 import com.kys.openapi.app.constants.ErrorCode;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * API 응답 정보
  */
 @Getter
+@ToString
 public class Response {
 
     private String code;

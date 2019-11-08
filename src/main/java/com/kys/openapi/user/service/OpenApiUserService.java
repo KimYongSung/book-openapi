@@ -41,10 +41,12 @@ public class OpenApiUserService implements UserService {
     @Override
     public Response joinUser(UserDTO dto){
 
-        Optional<User> user = userRepositorySupport.findByUserIdAndUserPwd(dto.getUserId(), encoder.encode(dto.getUserPwd()));
+        Optional<User> user = userRepositorySupport.findByUserId(dto.getUserId());
 
         if(user.isPresent())
             throw new AlreadyUserException();
+
+        dto.encodePassword(encoder);
 
         userRepository.save(dto.toEntity());
 
@@ -57,12 +59,12 @@ public class OpenApiUserService implements UserService {
      * @return
      */
     @Override
-    public Response loginUser(UserDTO dto) {
+    public DataResponse<TokenInfo> loginUser(UserDTO dto) {
 
         OpenApiUserDetail user = OpenApiUserDetail.of(userRepositorySupport.findByUserId(dto.getUserId())
                                                   .orElseThrow(UserNotFoundException::new));
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), encoder.encode(dto.getUserPwd())));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), dto.getUserPwd()));
 
         String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
 

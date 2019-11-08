@@ -8,7 +8,6 @@ import com.kys.openapi.book.service.BookSearchService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,12 +21,12 @@ public class BookSearchController {
     private BookSearchService bookService;
 
     @GetMapping(value = "/books")
-    public ResponseEntity<ListResponse<BookInfo>> searchBooks(@RequestBody BookDTO dto, Principal principal){
+    public ResponseEntity<ListResponse<BookInfo>> searchBooks(BookDTO dto, Principal principal){
         return ResponseEntity.ok(bookService.searchBooks(dto, principal));
     }
 
     @GetMapping(value = "/book")
-    public ResponseEntity<DataResponse<BookInfo>> searchBookDetail(@RequestBody BookDTO dto, Principal principal){
+    public ResponseEntity<DataResponse<BookInfo>> searchBookDetail(BookDTO dto, Principal principal){
         return ResponseEntity.ok(bookService.searchBookDetail(dto, principal));
     }
 }

@@ -1,7 +1,6 @@
 package com.kys.openapi.thirdparty.network;
 
-import com.kys.openapi.app.constants.ErrorCode;
-import com.kys.openapi.app.exception.OpenApiException;
+import com.kys.openapi.app.exception.OpenApiCallFailException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +15,13 @@ import java.util.function.Function;
 public class RoutingOpenApi {
 
     /**
-     * API 호출
+     * api 호출
+     * @param req 요청전문
+     * @param main openAPI 최초 요청서버
+     * @param backup openAPI backup 서버
      * @return
      */
-    public <Req, Res> Res call(Req req, Function<Req, Res> main, Function<Req, Res> backup) throws OpenApiException {
+    public <Req, Res> Res call(Req req, Function<Req, Res> main, Function<Req, Res> backup) {
 
         Res res = execute(req, main);
 
@@ -29,7 +31,7 @@ public class RoutingOpenApi {
 
         if(Objects.nonNull(res)) return res;
 
-        throw new OpenApiException(ErrorCode.CD_2000);
+        throw new OpenApiCallFailException();
     }
 
     /**
@@ -42,7 +44,7 @@ public class RoutingOpenApi {
         try{
             return api.apply(req);
         }catch(Exception e){
-            log.warn("{}", e.toString());
+            log.error("{}", e.toString());
             return null;
         }
     }
