@@ -1,4 +1,4 @@
-package com.kys.openapi.thirdparty.config;
+package com.kys.openapi.thirdparty;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -15,13 +15,25 @@ public interface QueryString {
      */
     String toUrl(UriComponentsBuilder builder);
 
+    /**
+     * Builder에 파라미터 추가
+     * @param builder
+     * @param name
+     * @param value
+     */
     default void addParam(UriComponentsBuilder builder, String name, Object value){
         if(Objects.nonNull(value)){
             builder.queryParam(name, value);
         }
     }
 
-    default void addParam(UriComponentsBuilder builder, String name, Enum value){
+    /**
+     * Builder에 파라미터 추가
+     * @param builder
+     * @param name
+     * @param value
+     */
+    default void addParam(UriComponentsBuilder builder, String name, Enum<?> value){
         if(Objects.nonNull(value)){
             builder.queryParam(name, value.name());
         }

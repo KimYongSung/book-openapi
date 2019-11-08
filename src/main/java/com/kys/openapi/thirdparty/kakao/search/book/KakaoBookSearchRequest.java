@@ -1,6 +1,6 @@
 package com.kys.openapi.thirdparty.kakao.search.book;
 
-import com.kys.openapi.thirdparty.config.QueryString;
+import com.kys.openapi.thirdparty.QueryString;
 import com.kys.openapi.thirdparty.kakao.code.BookTarget;
 import com.kys.openapi.thirdparty.kakao.code.SearchSort;
 import lombok.Builder;
@@ -48,7 +48,7 @@ public class KakaoBookSearchRequest implements QueryString {
         addParam(builder, "size", size);
         addParam(builder, "sort", sort);
         addParam(builder, "target", target);
-        return builder.toUriString();
+        return builder.build().toUriString();
     }
 
 }

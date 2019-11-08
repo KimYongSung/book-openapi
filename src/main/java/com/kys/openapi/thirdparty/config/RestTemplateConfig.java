@@ -22,7 +22,8 @@ public class RestTemplateConfig {
         return new RestTemplateBuilder().setConnectTimeout(netWorkConfig.getConnectionTimeOut())
                                         .setReadTimeout(netWorkConfig.getRecvTimeOut())
                                         .defaultMessageConverters()
-                                        .additionalInterceptors(loggingInterceptor());
+                                        .additionalInterceptors(loggingInterceptor())
+                ;
     }
 
     public ClientHttpRequestInterceptor loggingInterceptor(){
@@ -34,7 +35,7 @@ public class RestTemplateConfig {
 
             ClientHttpResponse response = execution.execute(request, body);
 
-            log.info("response status : [{}]", response.getStatusCode());
+            log.info("status : [{}]", response.getStatusCode());
 
             return response;
         };

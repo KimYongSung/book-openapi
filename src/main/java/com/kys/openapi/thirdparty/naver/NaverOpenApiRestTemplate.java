@@ -3,7 +3,7 @@ package com.kys.openapi.thirdparty.naver;
 import com.kys.openapi.thirdparty.naver.search.book.NaverBookDetailSearchRequest;
 import com.kys.openapi.thirdparty.naver.search.book.NaverBookSearchRequest;
 import com.kys.openapi.thirdparty.naver.search.book.NaverBookSearchResponse;
-import com.kys.openapi.thirdparty.network.OpenApiTemplate;
+import com.kys.openapi.thirdparty.network.OpenApiRestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
@@ -16,11 +16,11 @@ import org.springframework.web.client.RestTemplate;
  */
 @Slf4j
 @Component
-public class NaverOpenApiTemplate extends OpenApiTemplate {
+public class NaverOpenApiRestTemplate extends OpenApiRestTemplate {
 
     private NaverOpenApiKey naverApiKey;
 
-    public NaverOpenApiTemplate(RestTemplateBuilder builder, NaverOpenApiKey naverApiKey) {
+    public NaverOpenApiRestTemplate(RestTemplateBuilder builder, NaverOpenApiKey naverApiKey) {
         super(builder);
         this.naverApiKey = naverApiKey;
     }
@@ -28,11 +28,6 @@ public class NaverOpenApiTemplate extends OpenApiTemplate {
     @Override
     protected RestTemplate build(RestTemplateBuilder builder) {
         return builder.build();
-    }
-
-    @Override
-    public void addAuthorization(HttpHeaders headers) {
-        naverApiKey.addNaverApiKey(headers);
     }
 
     @Override
@@ -46,7 +41,7 @@ public class NaverOpenApiTemplate extends OpenApiTemplate {
      * @return
      */
     public ResponseEntity<NaverBookSearchResponse> bookSearch(NaverBookSearchRequest request){
-        return get(NaverOpenApi.BOOK_SEARCH, request, NaverBookSearchResponse.class);
+        return get(NaverOpenApiUrl.BOOK_SEARCH, request, NaverBookSearchResponse.class);
     }
 
     /**
@@ -55,6 +50,7 @@ public class NaverOpenApiTemplate extends OpenApiTemplate {
      * @return
      */
     public ResponseEntity<NaverBookSearchResponse> bookDetailSearch(NaverBookDetailSearchRequest request){
-        return get(NaverOpenApi.BOOK_DETAIL, request, NaverBookSearchResponse.class);
+        return get(NaverOpenApiUrl.BOOK_DETAIL, request, NaverBookSearchResponse.class);
     }
+    
 }

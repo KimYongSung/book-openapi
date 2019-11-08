@@ -1,14 +1,16 @@
 package com.kys.openapi.thirdparty.naver.search.book;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 @Getter
-@Setter
 @XmlRootElement(name = "item")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NaverBookItem {
@@ -23,4 +25,11 @@ public class NaverBookItem {
     private String isbn;
     private String description;
     private String pubdate;
+
+    public List<String> getIsbns(){
+
+        if(Objects.isNull(isbn)) return Collections.emptyList();
+
+        return Arrays.asList(isbn.split(" "));
+    }
 }

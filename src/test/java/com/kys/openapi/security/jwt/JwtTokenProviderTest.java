@@ -34,7 +34,6 @@ public class JwtTokenProviderTest {
     public void 토큰생성_및_검증(){
 
         String token = provider.createToken("1", Arrays.asList(Role.USER.name()));
-
         provider.validateToken(token);
     }
 

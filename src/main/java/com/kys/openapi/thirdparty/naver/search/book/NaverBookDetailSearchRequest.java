@@ -1,6 +1,6 @@
 package com.kys.openapi.thirdparty.naver.search.book;
 
-import com.kys.openapi.thirdparty.config.QueryString;
+import com.kys.openapi.thirdparty.QueryString;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,19 +16,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class NaverBookDetailSearchRequest implements QueryString {
 
     private String dTitl;
-
     private String dAuth;
-
     private String dCont;
-
     private String dIsbn;
-
     private String dPubl;
-
     private String dDafr;
-
     private String dDato;
-
     private String dCatg;
 
     @Builder

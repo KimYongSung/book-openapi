@@ -1,11 +1,11 @@
 package com.kys.openapi.thirdparty.naver;
 
-import com.kys.openapi.thirdparty.config.ApiUrl;
+import com.kys.openapi.thirdparty.ApiUrl;
 
 /**
  * 네이버 openApi end point 관리
  */
-public enum NaverOpenApi implements ApiUrl {
+public enum NaverOpenApiUrl implements ApiUrl {
 
     BOOK_SEARCH("/v1/search/book.xml")
     , BOOK_DETAIL("/v1/search/book_adv.xml")
@@ -15,7 +15,7 @@ public enum NaverOpenApi implements ApiUrl {
 
     private String uri;
 
-    NaverOpenApi(String uri) {
+    NaverOpenApiUrl(String uri) {
         this.uri = uri;
     }
 

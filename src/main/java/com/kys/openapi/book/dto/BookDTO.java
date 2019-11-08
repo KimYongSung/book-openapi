@@ -10,17 +10,17 @@ public class BookDTO {
 
     private String query;
 
-    private Integer start;
+    private Integer page;
 
-    private Integer end;
+    private Integer display;
 
     private String isbn;
 
     @Builder
-    public BookDTO(String query, Integer start, Integer end, String isbn) {
+    public BookDTO(String query, Integer page, Integer display, String isbn) {
         this.query = query;
-        this.start = start;
-        this.end = end;
+        this.page = page;
+        this.display = display;
         this.isbn = isbn;
     }
 }

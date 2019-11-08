@@ -4,6 +4,7 @@ import com.kys.openapi.app.constants.ErrorCode;
 import com.kys.openapi.app.result.Response;
 import com.kys.openapi.user.dto.UserDTO;
 import com.kys.openapi.user.service.UserService;
+import com.kys.support.JsonUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +41,8 @@ public class UserControllerTest {
 
         // when
         final ResultActions actions = mockMvc.perform(post("/join/user")
-                                             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                                             .param("userId", "")
-                                             .param("userPwd", ""))
+                                             .contentType(MediaType.APPLICATION_JSON)
+                                             .content(JsonUtil.objectToJson(userDTO)))
                                              .andDo(MockMvcResultHandlers.print());
 
         // then

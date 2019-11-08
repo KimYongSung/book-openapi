@@ -16,24 +16,22 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class NaverOpenApiTemplateTest {
+public class NaverOpenApiUrlRestTemplateTest {
 
-    private static NaverOpenApiTemplate naverOpenApiTemplate;
+    private static NaverOpenApiRestTemplate naverOpenApiTemplate;
 
     @BeforeClass
     public static void setUp(){
 
         RestTemplateConfig restTemplateConfig = new RestTemplateConfig(new NetWorkConfig(3000, 3000));
         NaverOpenApiKey apiKey = new NaverOpenApiKey("jCFIRiVPohq6KLt1VNcY", "IyL2fs4lVA");
-        naverOpenApiTemplate = new NaverOpenApiTemplate(restTemplateConfig.restTemplateBuilder(), apiKey);
+        naverOpenApiTemplate = new NaverOpenApiRestTemplate(restTemplateConfig.restTemplateBuilder(), apiKey);
     }
 
     @Test(expected = RestClientException.class)
     public void 잘못된_key_요청(){
 
-        NaverOpenApiKey apiKey = new NaverOpenApiKey("jCFIRiVPohq6KLt1VNcY", "2IyL2fs4lVA");
-        RestTemplateConfig restTemplateConfig = new RestTemplateConfig(new NetWorkConfig(3000, 3000));
-        NaverOpenApiTemplate naverOpenApiTemplate = new NaverOpenApiTemplate(restTemplateConfig.restTemplateBuilder(), apiKey);
+        NaverOpenApiRestTemplate naverOpenApiTemplate = getBadRequestParam();
         // given
         NaverBookSearchRequest request = new NaverBookSearchRequest("상실의 시대");
 
@@ -47,9 +45,6 @@ public class NaverOpenApiTemplateTest {
     @Test(expected = RestClientException.class)
     public void 부적절한_DISPLAY값(){
 
-        NaverOpenApiKey apiKey = new NaverOpenApiKey("jCFIRiVPohq6KLt1VNcY", "2IyL2fs4lVA");
-        RestTemplateConfig restTemplateConfig = new RestTemplateConfig(new NetWorkConfig(3000, 3000));
-        NaverOpenApiTemplate naverOpenApiTemplate = new NaverOpenApiTemplate(restTemplateConfig.restTemplateBuilder(), apiKey);
         // given
         NaverBookSearchRequest request = NaverBookSearchRequest.builder()
                                                                .display(101)
@@ -85,7 +80,7 @@ public class NaverOpenApiTemplateTest {
     public void 네이버_책_상세검색(){
         // given
         NaverBookDetailSearchRequest request = NaverBookDetailSearchRequest.builder()
-                                                                           .dIsbn("4770022328 9784770022325")
+                                                                           .dIsbn("9784770022325")
                                                                            .build() ;
 
         // when
@@ -101,5 +96,11 @@ public class NaverOpenApiTemplateTest {
         assertThat(channel.getDisplay()).isEqualTo(1);
         assertThat(items.size()).isEqualTo(1);
         assertThat(items.get(0)).hasFieldOrPropertyWithValue("isbn", "4770022328 9784770022325");
+    }
+
+    private NaverOpenApiRestTemplate getBadRequestParam() {
+        NaverOpenApiKey apiKey = new NaverOpenApiKey("jCFIRiVPohq6KLt1VNcY", "2IyL2fs4lVA");
+        RestTemplateConfig restTemplateConfig = new RestTemplateConfig(new NetWorkConfig(3000, 3000));
+        return new NaverOpenApiRestTemplate(restTemplateConfig.restTemplateBuilder(), apiKey);
     }
 }

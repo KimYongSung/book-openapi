@@ -2,7 +2,7 @@ package com.kys.openapi.thirdparty.kakao;
 
 import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchRequest;
 import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchResponse;
-import com.kys.openapi.thirdparty.network.OpenApiTemplate;
+import com.kys.openapi.thirdparty.network.OpenApiRestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
@@ -15,11 +15,11 @@ import org.springframework.web.client.RestTemplate;
  */
 @Slf4j
 @Component
-public class KakaoOpenApiTemplate extends OpenApiTemplate {
+public class KakaoOpenApiRestTemplate extends OpenApiRestTemplate {
 
     private KakaoOpenApiKey kakaoApiKey;
 
-    public KakaoOpenApiTemplate(RestTemplateBuilder builder, KakaoOpenApiKey kakaoApiKey) {
+    public KakaoOpenApiRestTemplate(RestTemplateBuilder builder, KakaoOpenApiKey kakaoApiKey) {
         super(builder);
         this.kakaoApiKey = kakaoApiKey;
     }
@@ -27,15 +27,6 @@ public class KakaoOpenApiTemplate extends OpenApiTemplate {
     @Override
     protected RestTemplate build(RestTemplateBuilder builder) {
         return builder.build();
-    }
-
-    /**
-     * Header에 정보 추가
-     * @param headers
-     */
-    @Override
-    public void addAuthorization(HttpHeaders headers){
-        kakaoApiKey.addKakaoAuthorization(headers);
     }
 
     /**
@@ -53,7 +44,7 @@ public class KakaoOpenApiTemplate extends OpenApiTemplate {
      * @return
      */
     public ResponseEntity<KakaoBookSearchResponse> bookSearch(KakaoBookSearchRequest request){
-        return get(KakaoOpenApi.BOOK_SEARCH, request, KakaoBookSearchResponse.class);
+        return get(KakaoOpenApiUrl.BOOK_SEARCH, request, KakaoBookSearchResponse.class);
     }
 
 }

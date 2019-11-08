@@ -15,21 +15,21 @@ public class ListResponse<T> extends Response{
 
     private Integer size;
 
-    private boolean isEnd;
+    private Integer page;
 
     @JsonProperty(value = "data")
     private List<T> data;
 
-    protected ListResponse(ErrorCode errorCode, Integer totalSize, Integer size, boolean isEnd, List<T> data) {
+    protected ListResponse(ErrorCode errorCode, Integer totalSize, Integer size, Integer page, List<T> data) {
         super(errorCode);
         this.totalSize = totalSize;
         this.size = size;
-        this.isEnd = isEnd;
+        this.page = page;
         this.data = data;
     }
 
-    public static <T> ListResponse<T> success( Integer totalSize, Integer size, boolean isEnd, List<T> datas){
-        return new ListResponse<>(ErrorCode.CD_0000, totalSize, size, isEnd, datas);
+    public static <T> ListResponse<T> success( Integer totalSize, Integer size, Integer page, List<T> datas){
+        return new ListResponse<>(ErrorCode.CD_0000, totalSize, size, page, datas);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.kys.openapi.thirdparty.network;
 
-import com.kys.openapi.app.exception.OpenApiCallFailException;
+import com.kys.openapi.app.exception.ThirdPartyApiCallFailException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class RoutingOpenApi {
 
         if(Objects.nonNull(res)) return res;
 
-        throw new OpenApiCallFailException();
+        throw new ThirdPartyApiCallFailException();
     }
 
     /**

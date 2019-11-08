@@ -1,6 +1,6 @@
 package com.kys.openapi.thirdparty.kakao;
 
-import com.kys.openapi.thirdparty.config.ApiUrl;
+import com.kys.openapi.thirdparty.ApiUrl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import lombok.Getter;
  * 카카오 API Endpoint 관리
  */
 @AllArgsConstructor
-public enum KakaoOpenApi implements ApiUrl {
+public enum KakaoOpenApiUrl implements ApiUrl {
 
     /**
      * 책 검색

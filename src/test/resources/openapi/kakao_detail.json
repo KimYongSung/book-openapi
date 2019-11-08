@@ -1,0 +1,28 @@
+{
+  "documents": [
+    {
+      "authors": [
+        "자오팅양",
+        "레지 드브레"
+      ],
+      "contents": "문화대혁명을 냉철한 시선으로 바라본 중국 철학자 자오팅양과 체 게바라와 함께 혁명을 이끈 프랑스 사상가 레지 드브레의 대화를 담은 『동양과 서양이 편지를 쓰다』. 이 책에는 근대적 사유의 한계와 동서양의 경계를 허무는 지적 대화를 엿볼 수 있다. 서로 다른 이력만큼이나 서양과 동양이라는 이질적인 환경에 놓여 있는 두 사람은 시간과 공간, 주제에 제약받지 않으며 12편의 편지를 나눴다. 이들은 학술적 은어나 논조를 전혀 사용하지 않고, 민감한 주제",
+      "datetime": "2016-05-20T00:00:00.000+09:00",
+      "isbn": "1157060595 9791157060597",
+      "price": 14500,
+      "publisher": "메디치미디어",
+      "sale_price": 13050,
+      "status": "정상판매",
+      "thumbnail": "https://search1.kakaocdn.net/thumb/R120x174.q85/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flbook%2Fimage%2F1576740%3Ftimestamp%3D20190131011253",
+      "title": "동양과 서양이 편지를 쓰다(상실의 시대)",
+      "translators": [
+        "송인재"
+      ],
+      "url": "https://search.daum.net/search?w=bookpage&bookId=1576740&q=%EB%8F%99%EC%96%91%EA%B3%BC+%EC%84%9C%EC%96%91%EC%9D%B4+%ED%8E%B8%EC%A7%80%EB%A5%BC+%EC%93%B0%EB%8B%A4%28%EC%83%81%EC%8B%A4%EC%9D%98+%EC%8B%9C%EB%8C%80%29"
+    }
+  ],
+  "meta": {
+    "is_end": true,
+    "pageable_count": 1,
+    "total_count": 1
+  }
+}

@@ -1,4 +1,4 @@
-package com.kys.openapi.thirdparty.config;
+package com.kys.openapi.thirdparty;
 
 public interface ApiUrl {
 

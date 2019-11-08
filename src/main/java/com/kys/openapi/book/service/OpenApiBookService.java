@@ -18,13 +18,17 @@ public class OpenApiBookService implements BookSearchService {
 
     private RoutingOpenApi routingOpenApi;
 
+    private NaverOpenApiSearch naverSearch;
+
+    private KakaoOpenApiSearch kakaoSearch;
+
     @Override
     public ListResponse<BookInfo> searchBooks(BookDTO dto, Principal principal) {
-        return routingOpenApi.call(dto,bookDTO -> null, bookDTO -> null);
+        return routingOpenApi.call(dto, kakaoSearch::bookSearch, naverSearch::bookSearch);
     }
 
     @Override
     public DataResponse<BookInfo> searchBookDetail(BookDTO dto, Principal principal) {
-        return routingOpenApi.call(dto,bookDTO -> null, bookDTO -> null);
+        return routingOpenApi.call(dto, kakaoSearch::bookDetailSearch, naverSearch::bookDetailSearch);
     }
 }

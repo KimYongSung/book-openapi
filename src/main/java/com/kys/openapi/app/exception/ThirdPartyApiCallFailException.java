@@ -2,9 +2,9 @@ package com.kys.openapi.app.exception;
 
 import com.kys.openapi.app.constants.ErrorCode;
 
-public class OpenApiCallFailException extends OpenApiException {
+public class ThirdPartyApiCallFailException extends OpenApiException {
 
-    public OpenApiCallFailException() {
+    public ThirdPartyApiCallFailException() {
         super(ErrorCode.CD_2000);
     }
 }

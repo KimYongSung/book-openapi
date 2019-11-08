@@ -2,6 +2,7 @@ package com.kys.openapi.app.result;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kys.openapi.app.constants.ErrorCode;
+import lombok.Getter;
 import lombok.ToString;
 
 /**
@@ -9,6 +10,7 @@ import lombok.ToString;
  * @param <T>
  */
 @ToString(callSuper = true)
+@Getter
 public class DataResponse<T> extends Response {
 
     @JsonProperty(value = "data")

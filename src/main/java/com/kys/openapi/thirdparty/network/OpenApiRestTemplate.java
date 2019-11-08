@@ -1,7 +1,8 @@
 package com.kys.openapi.thirdparty.network;
 
-import com.kys.openapi.thirdparty.config.ApiUrl;
-import com.kys.openapi.thirdparty.config.QueryString;
+import com.kys.openapi.thirdparty.ApiUrl;
+import com.kys.openapi.thirdparty.QueryString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -11,16 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Objects;
-
 /**
  * OpenAPI 공통 송수신 처리
  */
-public abstract class OpenApiTemplate {
+@Slf4j
+public abstract class OpenApiRestTemplate {
 
     protected RestTemplate restTemplate;
 
-    public OpenApiTemplate(RestTemplateBuilder builder) {
+    public OpenApiRestTemplate(RestTemplateBuilder builder) {
         this.restTemplate = build(builder);
     }
 
@@ -29,12 +29,6 @@ public abstract class OpenApiTemplate {
      * @param builder 기본설정된 RestTemplateBuilder
      */
     protected abstract RestTemplate build(RestTemplateBuilder builder);
-
-    /**
-     * Header에 OpenAPI 인증 정보 추가
-     * @param headers 헤더에 OpenAPI 서버별 인증정보 설정
-     */
-    protected abstract void addAuthorization(HttpHeaders headers);
 
     /**
      * 기본 Header 생성
@@ -49,7 +43,7 @@ public abstract class OpenApiTemplate {
      * @param clazz 응답 클래스
      * @returns
      */
-    public <T extends QueryString, R> ResponseEntity<R> get(ApiUrl url, T t, Class<R> clazz, Objects... uriVariables){
+    public <T extends QueryString, R> ResponseEntity<R> get(ApiUrl url, T t, Class<R> clazz, Object... uriVariables){
         return exchange(makeGetUrl(url, t), HttpMethod.GET, null, makeHeaders(), clazz, uriVariables);
     }
 
@@ -60,7 +54,7 @@ public abstract class OpenApiTemplate {
      * @param clazz 응답 클래스
      * @return
      */
-    public <T, R> ResponseEntity<R> post(ApiUrl url, T t, Class<R> clazz, Objects... uriVariables){
+    public <T, R> ResponseEntity<R> post(ApiUrl url, T t, Class<R> clazz, Object... uriVariables){
         return exchange(url.getFullUrl(), HttpMethod.POST, t, makeHeaders(), clazz, uriVariables);
     }
 
@@ -71,7 +65,7 @@ public abstract class OpenApiTemplate {
      * @param responseType  응답 클래스
      * @return
      */
-    public <T extends QueryString, R> ResponseEntity<R> get(ApiUrl url, T t, ParameterizedTypeReference<R> responseType, Objects... uriVariables){
+    public <T extends QueryString, R> ResponseEntity<R> get(ApiUrl url, T t, ParameterizedTypeReference<R> responseType, Object... uriVariables){
         return exchange(makeGetUrl(url, t), HttpMethod.GET, null, makeHeaders(), responseType, uriVariables);
     }
 
@@ -82,7 +76,7 @@ public abstract class OpenApiTemplate {
      * @param responseType  응답 클래스
      * @return
      */
-    public <T, R> ResponseEntity<R> post(ApiUrl url, T t, ParameterizedTypeReference<R> responseType, Objects... uriVariables){
+    public <T, R> ResponseEntity<R> post(ApiUrl url, T t, ParameterizedTypeReference<R> responseType, Object... uriVariables){
         return exchange(url.getFullUrl(), HttpMethod.POST, t, makeHeaders(), responseType, uriVariables);
     }
 
@@ -96,8 +90,7 @@ public abstract class OpenApiTemplate {
      * @param uriVariables  uri 파라미터 정보
      * @return
      */
-    public <T, R> ResponseEntity<R> exchange(String url, HttpMethod method, T t, HttpHeaders headers, Class<R> clazz, Objects... uriVariables){
-        addAuthorization(headers);
+    private <T, R> ResponseEntity<R> exchange(String url, HttpMethod method, T t, HttpHeaders headers, Class<R> clazz, Object... uriVariables){
         return restTemplate.exchange(url, method, new HttpEntity<>(t, headers), clazz, uriVariables);
     }
 
@@ -111,8 +104,7 @@ public abstract class OpenApiTemplate {
      * @param uriVariables  uri 파라미터 정보
      * @return
      */
-    public <T, R> ResponseEntity<R> exchange(String url, HttpMethod method, T t, HttpHeaders headers, ParameterizedTypeReference<R> responseType, Objects... uriVariables){
-        addAuthorization(headers);
+    private <T, R> ResponseEntity<R> exchange(String url, HttpMethod method, T t, HttpHeaders headers, ParameterizedTypeReference<R> responseType, Object... uriVariables){
         return restTemplate.exchange(url, method, new HttpEntity<>(t, headers), responseType, uriVariables);
     }
 
@@ -123,8 +115,8 @@ public abstract class OpenApiTemplate {
      * @return
      */
     private String makeGetUrl(ApiUrl url, QueryString queryString){
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url.getFullUrl());
+        String fullUrl               = url.getFullUrl();
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(fullUrl);
         return queryString.toUrl(builder);
     }
-
 }
