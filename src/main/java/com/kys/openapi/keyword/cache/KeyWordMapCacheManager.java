@@ -12,12 +12,13 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class ConcurrentMapKeyWordCacheManager implements KeyWordCacheManager {
+public class KeyWordMapCacheManager implements KeyWordCacheManager {
 
     private ConcurrentHashMap<String, KeyWordCallInfo> cache = new ConcurrentHashMap<>();
 
     private List<KeyWordCallInfo> top10;
 
+    @Override
     public List<KeyWordCallInfo> getTop10() {
         return cache.size() < 100 ? newTop10() : top10;
     }

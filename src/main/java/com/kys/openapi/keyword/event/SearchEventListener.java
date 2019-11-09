@@ -25,7 +25,6 @@ public class SearchEventListener {
     @EventListener
     @Async
     public void eventListener(KeyWordEvent event) {
-        log.info("event listen - {}", event.toString());
         repository.save(event.toEntity());
         cacheManager.addKeyWord(event.keyWord());
     }

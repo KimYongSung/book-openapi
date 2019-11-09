@@ -2,7 +2,7 @@ package com.kys.openapi.keyword.service;
 
 import com.kys.openapi.app.result.DataResponse;
 import com.kys.openapi.app.result.PageResponse;
-import com.kys.openapi.keyword.cache.ConcurrentMapKeyWordCacheManager;
+import com.kys.openapi.keyword.cache.KeyWordCacheManager;
 import com.kys.openapi.keyword.domain.KeyWordHistory;
 import com.kys.openapi.keyword.domain.repository.KeyWordRepositorySupport;
 import com.kys.openapi.keyword.dto.KeyWordCallInfo;
@@ -18,13 +18,13 @@ import java.util.List;
 @AllArgsConstructor
 public class OpenApiKeyWordService implements KeyWordService {
 
-    private ConcurrentMapKeyWordCacheManager manager;
+    private KeyWordCacheManager cacheManager;
 
     private KeyWordRepositorySupport keyWordRepositorySupport;
 
     @Override
     public DataResponse<List<KeyWordCallInfo>> getKeyWordByTop10() {
-        return DataResponse.success(manager.getTop10());
+        return DataResponse.success(cacheManager.getTop10());
     }
 
     @Override
