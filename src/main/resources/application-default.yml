@@ -46,7 +46,7 @@ thirdparty:
 
   kakao:
     key-prefix: KakaoAK
-    rest-apiKey: 355455c96ccc2c1b228bb552f56d5b44
+    rest-api-key: 355455c96ccc2c1b228bb552f56d5b44
 
   naver:
     client-id: jCFIRiVPohq6KLt1VNcY

@@ -26,13 +26,13 @@ public class KakaoOpenApiKey implements InitializingBean {
     private String key;
 
     public KakaoOpenApiKey(String restApiKey, String keyPrefix) {
-        this.key = restApiKey;
+        this.restApiKey = restApiKey;
         this.keyPrefix = keyPrefix;
     }
 
     @Override
     public void afterPropertiesSet() {
-        this.key = String.format("%s %s", keyPrefix, key);
+        this.key = String.format("%s %s", keyPrefix, restApiKey);
     }
 
     /**

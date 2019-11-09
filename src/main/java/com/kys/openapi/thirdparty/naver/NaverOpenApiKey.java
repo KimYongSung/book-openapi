@@ -21,12 +21,12 @@ public class NaverOpenApiKey {
     /**
      *  네이버 openAPI 요청 ID 용 http 헤더
      */
-    protected static final String NAVER_CLIENT_ID = "X-Naver-Client-Id";
+    private static final String NAVER_CLIENT_ID = "X-Naver-Client-Id";
 
     /**
      *  네이버 openAPI 요청 SECRET 용 http 헤더
      */
-    protected static final String NAVER_CLIENT_SECRET = "X-Naver-Client-Secret";
+    private static final String NAVER_CLIENT_SECRET = "X-Naver-Client-Secret";
 
     @Setter
     private String clientId;

@@ -1,6 +1,7 @@
 package com.kys.openapi.keyword.domain.repository;
 
 import com.kys.openapi.keyword.domain.KeyWordHistory;
+import com.querydsl.core.QueryResults;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +37,15 @@ public class KeyWordPageTest {
         keyWordRepository.save(new KeyWordHistory(userNo, "안녕4"));
 
         // when
-        List<KeyWordHistory> keyWords = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, PageRequest.of(0,2));
+        QueryResults<KeyWordHistory> results = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, PageRequest.of(0, 2));
 
         // then
-        then(keyWords).hasSize(2);
+        then(results.getTotal()).isEqualTo(4);
+        then(results.getOffset()).isEqualTo(0);
+        then(results.getLimit()).isEqualTo(2);
+
+        List<KeyWordHistory> keyWords = results.getResults();
+
         then(keyWords.get(0)).hasFieldOrPropertyWithValue("userNo", userNo)
                              .hasFieldOrPropertyWithValue("keyWord", "안녕4");
 
@@ -58,10 +64,15 @@ public class KeyWordPageTest {
         keyWordRepository.save(new KeyWordHistory(userNo, "안녕4"));
 
         // when
-        List<KeyWordHistory> keyWords = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, PageRequest.of(1,2));
+        QueryResults<KeyWordHistory> results = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, PageRequest.of(1, 2));
 
         // then
-        then(keyWords).hasSize(2);
+        then(results.getTotal()).isEqualTo(4);
+        then(results.getOffset()).isEqualTo(2);
+        then(results.getLimit()).isEqualTo(2);
+
+        List<KeyWordHistory> keyWords = results.getResults();
+
         then(keyWords.get(0)).hasFieldOrPropertyWithValue("userNo", userNo)
                              .hasFieldOrPropertyWithValue("keyWord", "안녕2");
 

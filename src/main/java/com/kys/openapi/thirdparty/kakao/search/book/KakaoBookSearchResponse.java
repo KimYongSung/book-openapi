@@ -2,7 +2,6 @@ package com.kys.openapi.thirdparty.kakao.search.book;
 
 import com.kys.openapi.thirdparty.kakao.search.common.SearchMeta;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Getter
-@Setter
 @ToString
 public class KakaoBookSearchResponse {
 

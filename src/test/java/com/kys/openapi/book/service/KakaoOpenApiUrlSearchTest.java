@@ -2,8 +2,9 @@ package com.kys.openapi.book.service;
 
 import com.kys.openapi.app.exception.ThirdPartyApiResultNotFoundException;
 import com.kys.openapi.app.result.DataResponse;
-import com.kys.openapi.app.result.ListResponse;
+import com.kys.openapi.app.result.PageResponse;
 import com.kys.openapi.book.dto.BookDTO;
+import com.kys.openapi.book.dto.BookDetailDTO;
 import com.kys.openapi.book.dto.BookInfo;
 import com.kys.openapi.thirdparty.kakao.KakaoOpenApiRestTemplate;
 import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchResponse;
@@ -40,9 +41,7 @@ public class KakaoOpenApiUrlSearchTest {
     @Test
     public void 상세조회_확인() throws IOException {
         // given
-        BookDTO dto = BookDTO.builder()
-                .isbn("1157060595")
-                .build();
+        BookDetailDTO dto = new BookDetailDTO("1157060595");
 
         given(openApiTemplate.bookSearch(any())).willReturn(makeDetailResponse());
 
@@ -56,9 +55,7 @@ public class KakaoOpenApiUrlSearchTest {
     @Test(expected = ThirdPartyApiResultNotFoundException.class)
     public void 상세조회_결과없음() throws IOException {
         // given
-        BookDTO dto = BookDTO.builder()
-                .isbn("1157060595")
-                .build();
+        BookDetailDTO dto = new BookDetailDTO("1157060595");
 
         given(openApiTemplate.bookSearch(any())).willReturn(makeDetailResponse());
 
@@ -78,7 +75,7 @@ public class KakaoOpenApiUrlSearchTest {
         given(openApiTemplate.bookSearch(any())).willReturn(makeQueryResponse());
 
         // when
-        ListResponse<BookInfo> response = kakaoOpenApiSearch.bookSearch(dto);
+        PageResponse<BookInfo> response = kakaoOpenApiSearch.bookSearch(dto);
 
         // then
         assertThat(response.getData().size()).isEqualTo(10);
@@ -94,7 +91,7 @@ public class KakaoOpenApiUrlSearchTest {
         given(openApiTemplate.bookSearch(any())).willReturn(makeQueryNoDataResponse());
 
         // when
-        ListResponse<BookInfo> response = kakaoOpenApiSearch.bookSearch(dto);
+        PageResponse<BookInfo> response = kakaoOpenApiSearch.bookSearch(dto);
 
         // then
         assertThat(response.getData().size()).isEqualTo(0);

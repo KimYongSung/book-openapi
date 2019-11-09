@@ -2,8 +2,9 @@ package com.kys.openapi.book.service;
 
 import com.kys.openapi.app.exception.ThirdPartyApiResultNotFoundException;
 import com.kys.openapi.app.result.DataResponse;
-import com.kys.openapi.app.result.ListResponse;
+import com.kys.openapi.app.result.PageResponse;
 import com.kys.openapi.book.dto.BookDTO;
+import com.kys.openapi.book.dto.BookDetailDTO;
 import com.kys.openapi.book.dto.BookInfo;
 import com.kys.openapi.thirdparty.naver.NaverOpenApiRestTemplate;
 import com.kys.openapi.thirdparty.naver.search.book.NaverBookSearchResponse;
@@ -46,7 +47,7 @@ public class NaverOpenApiUrlSearchTest {
         given(apiTemplate.bookSearch(any())).willReturn(makeResponse());
 
         // when
-        ListResponse<BookInfo> response = naverOpenApiSearch.bookSearch(dto);
+        PageResponse<BookInfo> response = naverOpenApiSearch.bookSearch(dto);
 
         // then
         assertThat(response.getData().size()).isEqualTo(10);
@@ -62,7 +63,7 @@ public class NaverOpenApiUrlSearchTest {
         given(apiTemplate.bookSearch(any())).willReturn(makeNoDataResponse());
 
         // when
-        ListResponse<BookInfo> response = naverOpenApiSearch.bookSearch(dto);
+        PageResponse<BookInfo> response = naverOpenApiSearch.bookSearch(dto);
 
         // then
         assertThat(response.getData().size()).isEqualTo(0);
@@ -71,9 +72,7 @@ public class NaverOpenApiUrlSearchTest {
     @Test
     public void 상세조회_확인() throws JAXBException {
         // given
-        BookDTO dto = BookDTO.builder()
-                             .isbn("8970123695")
-                             .build();
+        BookDetailDTO dto = new BookDetailDTO("8970123695");
 
         given(apiTemplate.bookDetailSearch(any())).willReturn(makeDetailResponse());
 
@@ -87,38 +86,33 @@ public class NaverOpenApiUrlSearchTest {
     @Test(expected = ThirdPartyApiResultNotFoundException.class)
     public void 상세조회_조회결과_없음() throws JAXBException {
         // given
-        BookDTO dto = BookDTO.builder()
-                             .isbn("8970123695")
-                             .build();
+        BookDetailDTO dto = new BookDetailDTO("8970123695");
 
         given(apiTemplate.bookDetailSearch(any())).willReturn(makeDetailNoDataResponse());
 
         // when
         DataResponse<BookInfo> response = naverOpenApiSearch.bookDetailSearch(dto);
 
-        // then
     }
 
     public ResponseEntity<NaverBookSearchResponse> makeResponse() throws JAXBException {
-        InputStream stream = ResourceUtil.getStream("classpath:openapi/naver_book_search_10.xml");
-        NaverBookSearchResponse response = XmlUtil.xmlToObject(stream, NaverBookSearchResponse.class);
-        return ResponseEntity.ok(response);
+        return makeTestResponse("classpath:openapi/naver_book_search_10.xml");
     }
 
     public ResponseEntity<NaverBookSearchResponse> makeNoDataResponse() throws JAXBException {
-        InputStream stream = ResourceUtil.getStream("classpath:openapi/naver_book_search_nodata.xml");
-        NaverBookSearchResponse response = XmlUtil.xmlToObject(stream, NaverBookSearchResponse.class);
-        return ResponseEntity.ok(response);
+        return makeTestResponse("classpath:openapi/naver_book_search_nodata.xml");
     }
 
     public ResponseEntity<NaverBookSearchResponse> makeDetailResponse() throws JAXBException {
-        InputStream stream = ResourceUtil.getStream("classpath:openapi/naver_detail.xml");
-        NaverBookSearchResponse response = XmlUtil.xmlToObject(stream, NaverBookSearchResponse.class);
-        return ResponseEntity.ok(response);
+        return makeTestResponse("classpath:openapi/naver_detail.xml");
     }
 
     public ResponseEntity<NaverBookSearchResponse> makeDetailNoDataResponse() throws JAXBException {
-        InputStream stream = ResourceUtil.getStream("classpath:openapi/naver_detail_no_data.xml");
+        return makeTestResponse("classpath:openapi/naver_detail_no_data.xml");
+    }
+
+    public ResponseEntity<NaverBookSearchResponse> makeTestResponse(String file) throws JAXBException {
+        InputStream stream = ResourceUtil.getStream(file);
         NaverBookSearchResponse response = XmlUtil.xmlToObject(stream, NaverBookSearchResponse.class);
         return ResponseEntity.ok(response);
     }

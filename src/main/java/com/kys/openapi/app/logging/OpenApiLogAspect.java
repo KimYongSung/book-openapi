@@ -73,7 +73,8 @@ public class OpenApiLogAspect {
 
         String name = findObjectName(joinPoint);
 
-        log.info("<== {}", name);
+
+        log.info("<== {} - {}", name, joinPoint.getArgs());
 
         timer.start();
 

@@ -68,6 +68,6 @@ public class OpenApiUserService implements UserService {
 
         String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
 
-        return DataResponse.success(new TokenInfo(token));
+        return DataResponse.success(TokenInfo.valueOf(token));
     }
 }

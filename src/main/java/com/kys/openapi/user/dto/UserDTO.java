@@ -13,11 +13,11 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 public class UserDTO {
 
-    @NotEmpty
+    @NotEmpty(message = "ID가 누락되었습니다.")
     @Length(max = 64)
     private String userId;
 
-    @NotEmpty
+    @NotEmpty(message = "비밀번호가 누락되었습니다.")
     @Length(max = 30)
     private String userPwd;
 

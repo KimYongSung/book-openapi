@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @Entity
-@Table(name = "BOOK_USER", indexes = {@Index(name = "IDX_BOOK_USER_01", columnList = "USER_ID")})
+@Table(name = "USER", indexes = {@Index(name = "IDX_BOOK_USER_01", columnList = "USER_ID")})
 public class User {
 
     @Id

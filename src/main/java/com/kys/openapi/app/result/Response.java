@@ -3,6 +3,10 @@ package com.kys.openapi.app.result;
 import com.kys.openapi.app.constants.ErrorCode;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.validation.BindingResult;
+
+import java.util.Objects;
+
 
 /**
  * API 응답 정보
@@ -20,6 +24,11 @@ public class Response {
         this.message = errorCode.getMessage();
     }
 
+    private Response(String validMsg) {
+        this.code = ErrorCode.CD_S001.getCode();
+        this.message = validMsg;
+    }
+
     /**
      * API 실패 응답 생성
      * @param errorCode 결과코드
@@ -29,6 +38,15 @@ public class Response {
         return new Response(errorCode);
     }
 
+    /**
+     * 파라미터 유효성 실패 에러
+     *
+     * @param result
+     * @return
+     */
+    public static Response validationError(BindingResult result) {
+        return Objects.isNull(result) ? new Response(ErrorCode.CD_S001) : new Response(result.getFieldError().getDefaultMessage());
+    }
     /**
      * API 성공 응답 생성
      * @return

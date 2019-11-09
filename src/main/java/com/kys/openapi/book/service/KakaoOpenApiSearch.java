@@ -3,9 +3,10 @@ package com.kys.openapi.book.service;
 import com.kys.openapi.app.exception.ThirdPartyApiResultFailException;
 import com.kys.openapi.app.exception.ThirdPartyApiResultNotFoundException;
 import com.kys.openapi.app.result.DataResponse;
-import com.kys.openapi.app.result.ListResponse;
+import com.kys.openapi.app.result.PageResponse;
 import com.kys.openapi.app.util.StringUtil;
 import com.kys.openapi.book.dto.BookDTO;
+import com.kys.openapi.book.dto.BookDetailDTO;
 import com.kys.openapi.book.dto.BookInfo;
 import com.kys.openapi.thirdparty.kakao.KakaoOpenApiRestTemplate;
 import com.kys.openapi.thirdparty.kakao.code.BookTarget;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @AllArgsConstructor
@@ -32,13 +34,14 @@ public class KakaoOpenApiSearch {
      * @param dto
      * @return
      */
-    public ListResponse<BookInfo> bookSearch(BookDTO dto){
+    public PageResponse<BookInfo> bookSearch(BookDTO dto) {
+
+        Objects.requireNonNull(dto, "BookDTO is null");
 
         KakaoBookSearchRequest request = KakaoBookSearchRequest.builder()
                                                                .query(dto.getQuery())
                                                                .page(dto.getPage())
                                                                .size(dto.getDisplay())
-                                                               .target(BookTarget.title)
                                                                .build();
 
         ResponseEntity<KakaoBookSearchResponse> responseEntity = openApiTemplate.bookSearch(request);
@@ -52,7 +55,7 @@ public class KakaoOpenApiSearch {
      * @param responseEntity
      * @return
      */
-    private ListResponse<BookInfo> kakaoBookSearchResponseHandler(BookDTO dto, ResponseEntity<KakaoBookSearchResponse> responseEntity) {
+    private PageResponse<BookInfo> kakaoBookSearchResponseHandler(BookDTO dto, ResponseEntity<KakaoBookSearchResponse> responseEntity) {
 
         httpStatusCheck(responseEntity);
 
@@ -61,12 +64,14 @@ public class KakaoOpenApiSearch {
         SearchMeta meta = response.getMeta();
 
         if(!response.isDocument()){
-            return ListResponse.success(meta.getTotalCount(), 0, dto.getPage(), Collections.emptyList());
+            return PageResponse.success(meta.getTotalCount(), 0, dto.getPage(), Collections.emptyList());
         }
 
         List<BookInfo> books = response.convertDocument(this::documentToBookInfo);
 
-        return ListResponse.success(meta.getTotalCount(), books.size(), dto.getPage(), books);
+        int page = Objects.isNull(dto.getPage()) ? meta.getPageableCount() : dto.getPage();
+
+        return PageResponse.success(meta.getTotalCount(), books.size(), page, books);
     }
 
     /**
@@ -74,7 +79,9 @@ public class KakaoOpenApiSearch {
      * @param dto
      * @return
      */
-    public DataResponse<BookInfo> bookDetailSearch(BookDTO dto){
+    public DataResponse<BookInfo> bookDetailSearch(BookDetailDTO dto) {
+
+        Objects.requireNonNull(dto, "BookDetailDTO is null");
 
         KakaoBookSearchRequest request = KakaoBookSearchRequest.builder()
                                                                .query(dto.getIsbn())
@@ -83,16 +90,15 @@ public class KakaoOpenApiSearch {
 
         ResponseEntity<KakaoBookSearchResponse> responseEntity = openApiTemplate.bookSearch(request);
 
-        return kakaoBookDetailSearchResponseHandler(dto, responseEntity);
+        return kakaoBookDetailSearchResponseHandler(responseEntity);
     }
 
     /**
      * 카카오 책 상세 검색 결과 처리
-     * @param dto
      * @param responseEntity
      * @return
      */
-    private DataResponse<BookInfo> kakaoBookDetailSearchResponseHandler(BookDTO dto, ResponseEntity<KakaoBookSearchResponse> responseEntity) {
+    private DataResponse<BookInfo> kakaoBookDetailSearchResponseHandler(ResponseEntity<KakaoBookSearchResponse> responseEntity) {
 
         httpStatusCheck(responseEntity);
 

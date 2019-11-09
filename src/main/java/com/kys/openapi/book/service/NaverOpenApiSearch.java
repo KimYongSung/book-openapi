@@ -3,9 +3,10 @@ package com.kys.openapi.book.service;
 import com.kys.openapi.app.exception.ThirdPartyApiResultFailException;
 import com.kys.openapi.app.exception.ThirdPartyApiResultNotFoundException;
 import com.kys.openapi.app.result.DataResponse;
-import com.kys.openapi.app.result.ListResponse;
+import com.kys.openapi.app.result.PageResponse;
 import com.kys.openapi.app.util.StringUtil;
 import com.kys.openapi.book.dto.BookDTO;
+import com.kys.openapi.book.dto.BookDetailDTO;
 import com.kys.openapi.book.dto.BookInfo;
 import com.kys.openapi.thirdparty.naver.NaverOpenApiRestTemplate;
 import com.kys.openapi.thirdparty.naver.search.book.NaverBookDetailSearchRequest;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @AllArgsConstructor
@@ -31,7 +33,9 @@ public class NaverOpenApiSearch {
      * @param dto
      * @return
      */
-    public ListResponse<BookInfo> bookSearch(BookDTO dto){
+    public PageResponse<BookInfo> bookSearch(BookDTO dto) {
+
+        Objects.requireNonNull(dto, "BookDTO is null");
 
         NaverBookSearchRequest request = NaverBookSearchRequest.builder()
                                                                .query(dto.getQuery())
@@ -49,18 +53,18 @@ public class NaverOpenApiSearch {
      * @param responseEntity
      * @return
      */
-    private ListResponse<BookInfo> bookSearchResponseHandler(ResponseEntity<NaverBookSearchResponse> responseEntity) {
+    private PageResponse<BookInfo> bookSearchResponseHandler(ResponseEntity<NaverBookSearchResponse> responseEntity) {
 
         httpStatusCheck(responseEntity);
 
         NaverBookSearchResponse.Channel channel = responseEntity.getBody().getChannel();
 
         if(!channel.isItems())
-            return ListResponse.success(channel.getTotal(), 0, channel.getStart(), Collections.emptyList());
+            return PageResponse.success(channel.getTotal(), 0, channel.getStart(), Collections.emptyList());
 
         List<BookInfo> books = channel.convertItem(this::bookItemToBookInfo);
 
-        return ListResponse.success(channel.getTotal(), channel.getDisplay(), channel.getStart(), books);
+        return PageResponse.success(channel.getTotal(), channel.getDisplay(), channel.getStart(), books);
     }
 
     /**
@@ -68,7 +72,10 @@ public class NaverOpenApiSearch {
      * @param dto
      * @return
      */
-    public DataResponse<BookInfo> bookDetailSearch (BookDTO dto){
+    public DataResponse<BookInfo> bookDetailSearch(BookDetailDTO dto) {
+
+        Objects.requireNonNull(dto, "BookDetailDTO is null");
+
         NaverBookDetailSearchRequest request = NaverBookDetailSearchRequest.builder()
                                                                            .dIsbn(dto.getIsbn())
                                                                            .build();
