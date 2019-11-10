@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>책 검색 서비스</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/static/css/sb-admin-2.css" rel="stylesheet">
+    <link href="/static/vendor/pagination/pagination.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <#include "/layout/sidebar.html">
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <#include "/layout/topbar.html">
+
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand navbar-light bg-white mb-4 shadow">
+                    <div class="input-group">
+                        <input type="text" id="searchTxt" class="form-control bg-light border-0 small" placeholder="검색어"
+                               aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button id="searchBtn" class="btn btn-primary" type="button">
+                                <i class="fas fa-search fa-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">책 검색 결과</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>ISBN</th>
+                                    <th>제목</th>
+                                    <th>저자</th>
+                                    <th>출판사</th>
+                                    <th>판매가</th>
+                                </tr>
+                                </thead>
+                                <tbody id="data-container">
+
+                                </tbody>
+                            </table>
+
+                            <div id="dataTable"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2019</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<#include "/layout/logout.html">
+
+<div class="modal fade" id="bookDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">상세정보</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/static/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/static/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="/static/vendor/pagination/pagination.js"></script>
+
+<script type="text/javascript">
+
+
+  var BookApp = {
+
+    pageInit : function(){
+      BookApp.event.init();
+    }, 
+    pagination : {
+
+      load : function() {
+        var table = $('#dataTable');
+        var search = $('#searchTxt');
+
+        if(!search.val()){
+          alert("검색어를 입력해주세요.");
+          return;
+        }
+
+        table.pagination({
+          dataSource: '/search/book?search='+search.val(),
+          locator: 'data',
+          totalNumberLocator: function(response) {
+              return response.totalSize;
+          },
+          disableClassName: ".card div li text-align",
+          alias: {
+              pageNumber: 'start',
+              pageSize: 'length'
+          }, 
+          ajax: {
+            beforeSend: function(xhr) {
+              const token = localStorage.getItem('token');
+              xhr.setRequestHeader("Authorization", "Bearer " + token);
+            },
+            error: function(jqXHR, textStatus){
+              BookApp.event.errorHandler(jqXHR, textStatus);
+            }
+          },
+          callback: function (data, pagination) {
+              var dataHtml = '';
+
+              $.each(data, function (index, item) {
+                  dataHtml += '<tr>';
+                  dataHtml += '<th><a href="#" data-toggle="modal" data-target="#bookDetailModal">' + item.isbn + '</a></th>';
+                  dataHtml += '<th>' + item.title + '</th>';
+                  dataHtml += '<th>' + item.author + '</th>';
+                  dataHtml += '<th>' + item.publisher + '</th>';
+                  dataHtml += '<th>' + item.salePrice + '</th>';
+                  dataHtml += '</tr>';
+              });
+
+              $("#data-container").html(dataHtml);
+          }
+        })
+      }
+    },
+    service : {
+      goDetail : function(){
+
+      }
+    },
+    event : {
+      init : function(){
+        $('#searchBtn').on('click', function() {
+          BookApp.pagination.load();
+        });
+
+        $("#searchTxt").keyup(function(e){
+          if(e.keyCode == 13)  BookApp.pagination.load(); 
+        });
+
+      },
+      errorHandler : function(jqXHR, textStatus){
+            alert(jqXHR.responseJSON.message);
+
+            if(jqXHR.status == 401){
+              location.href = '/';
+              localStorage.removeItem('token');
+          }
+        }
+      }
+  }
+  
+  
+
+  $(document).ready(function() {
+    try {
+      BookApp.pageInit();
+    } catch(e) {
+      alert("Error : " + e.toString());
+    }
+  });
+
+</script>
+
+</body>
+
+</html>
