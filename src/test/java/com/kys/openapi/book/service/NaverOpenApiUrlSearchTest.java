@@ -41,7 +41,7 @@ public class NaverOpenApiUrlSearchTest {
     public void 쿼리조회() throws JAXBException {
         // given
         BookDTO dto = BookDTO.builder()
-                             .query("상실의시대")
+                .search("상실의시대")
                              .build();
 
         given(apiTemplate.bookSearch(any())).willReturn(makeResponse());
@@ -57,7 +57,7 @@ public class NaverOpenApiUrlSearchTest {
     public void 쿼리조회_조회결과_없음() throws JAXBException {
         // given
         BookDTO dto = BookDTO.builder()
-                             .query("12")
+                .search("12")
                              .build();
 
         given(apiTemplate.bookSearch(any())).willReturn(makeNoDataResponse());

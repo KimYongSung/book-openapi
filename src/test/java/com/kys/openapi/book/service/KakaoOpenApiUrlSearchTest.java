@@ -69,7 +69,7 @@ public class KakaoOpenApiUrlSearchTest {
     public void 쿼리조회() throws IOException {
         // given
         BookDTO dto = BookDTO.builder()
-                .query("상실의시대")
+                .search("상실의시대")
                 .build();
 
         given(openApiTemplate.bookSearch(any())).willReturn(makeQueryResponse());
@@ -85,7 +85,7 @@ public class KakaoOpenApiUrlSearchTest {
     public void 쿼리조회_결과없음() throws IOException {
         // given
         BookDTO dto = BookDTO.builder()
-                .query("상실의시대")
+                .search("상실의시대")
                 .build();
 
         given(openApiTemplate.bookSearch(any())).willReturn(makeQueryNoDataResponse());

@@ -1,6 +1,7 @@
 package com.kys.openapi.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kys.openapi.security.handler.UserDeniedHandler;
 import com.kys.openapi.security.jwt.JwtConfigurer;
 import com.kys.openapi.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,8 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private ObjectMapper objectMapper;
 
+    private UserDeniedHandler userDeniedHandler;
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -40,10 +43,12 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
-            .antMatchers("/", "/user/**").permitAll()
+                .antMatchers("/", "/user/**", "/web/**").permitAll()
             .anyRequest().authenticated()
             .and()
             .apply(new JwtConfigurer(jwtTokenProvider, objectMapper))
+                .and()
+                .exceptionHandling().accessDeniedHandler(userDeniedHandler)
             ;
     }
 

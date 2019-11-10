@@ -23,6 +23,6 @@ public class BookSearchEventPublisher {
      * @param principal
      */
     public void publishEvent(BookDTO bookDTO, Principal principal) {
-        publisher.publishEvent(new BookSearchEvent(Long.parseLong(principal.getName()), bookDTO.getQuery()));
+        publisher.publishEvent(new BookSearchEvent(Long.parseLong(principal.getName()), bookDTO.getSearch()));
     }
 }

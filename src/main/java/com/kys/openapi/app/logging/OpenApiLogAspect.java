@@ -48,7 +48,7 @@ public class OpenApiLogAspect {
      */
     @Around("execution(public * com.kys.openapi.*.controller..*(..))")
     public Object controllerLogging(ProceedingJoinPoint joinPoint) throws Throwable {
-        return logging(joinPoint);
+        return controllerLog(joinPoint);
     }
 
     /**
@@ -57,7 +57,7 @@ public class OpenApiLogAspect {
      * @return
      * @throws Throwable
      */
-    @Around("@annotation(org.springframework.web.bind.annotation.ExceptionHandler)")
+    @Around("execution(public * com.kys.openapi.app.exception.handler.RestApiGlobalExceptionHandler.*(..))")
     public Object exceptionHandlerLogging(ProceedingJoinPoint joinPoint) throws Throwable {
         return exceptionLogging(joinPoint);
     }
@@ -87,6 +87,32 @@ public class OpenApiLogAspect {
         }else{
             log.info("==> {} [{} ms ]", name, timer.calc());
         }
+
+        return response;
+    }
+
+    /**
+     * logging 처리
+     *
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
+    private Object controllerLog(ProceedingJoinPoint joinPoint) throws Throwable {
+        ExecuteTimer timer = ExecuteTimer.newTimer();
+
+        String name = findObjectName(joinPoint);
+
+
+        log.info("<== {} - {}", name, joinPoint.getArgs());
+
+        timer.start();
+
+        Object response = joinPoint.proceed();
+
+        timer.end();
+
+        log.info("==> {} [{} ms ] - {}", name, timer.calc(), response);
 
         return response;
     }

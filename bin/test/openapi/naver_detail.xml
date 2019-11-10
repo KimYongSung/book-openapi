@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Naver Open API - book_adv ::''</title>
+        <link>https://search.naver.com</link>
+        <description>Naver Search Result</description>
+        <lastBuildDate>Fri, 08 Nov 2019 22:28:31 +0900</lastBuildDate>
+        <total>1</total>
+        <start>1</start>
+        <display>1</display>
+        <item>
+            <title>상실의 시대 (원제 노르웨이의 숲)</title>
+            <link>http://book.naver.com/bookdb/book_detail.php?bid=20349</link>
+            <image>https://bookthumb-phinf.pstatic.net/cover/000/203/00020349.jpg?type=m1&amp;udate=20120904</image>
+            <author>무라카미 하루키</author>
+            <price>15000</price>
+            <discount>13500</discount>
+            <publisher>문학사상사</publisher>
+            <pubdate>20100720</pubdate>
+            <isbn>8970123695 9788970123691</isbn>
+            <description>상실의 시대를 지나는 세상 모든 청춘을 위해!
+
+                일본을 뛰어넘어 세계적 베스트셀러 작가로 거듭난 무라카미 하루키를 대표하는 『상실의 시대』. 혼자라는 고독 속에서 꿈과 사랑, 그리고 정든 사람들을 잃어가는 상실의 아픔을 겪는 세상 모든
+                청춘을 위한 장편소설이다. 저자의 자전적 소설이기도 하다....
+            </description>
+        </item>
+    </channel>
+</rss>

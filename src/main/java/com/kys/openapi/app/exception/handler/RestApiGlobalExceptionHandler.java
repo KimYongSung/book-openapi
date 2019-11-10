@@ -2,6 +2,7 @@ package com.kys.openapi.app.exception.handler;
 
 import com.kys.openapi.app.constants.ErrorCode;
 import com.kys.openapi.app.exception.OpenApiException;
+import com.kys.openapi.app.exception.UserNotFoundException;
 import com.kys.openapi.app.result.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,12 @@ public class RestApiGlobalExceptionHandler extends ResponseEntityExceptionHandle
     @ResponseBody
     public ResponseEntity<Object> handler(OpenApiException e, WebRequest request){
         return handleExceptionInternal(e, e.toResponse(), null, HttpStatus.OK, request);
+    }
+
+    @ExceptionHandler(value = UserNotFoundException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handler(UserNotFoundException e, WebRequest request) {
+        return handleExceptionInternal(e, Response.error(ErrorCode.CD_1001), null, HttpStatus.UNAUTHORIZED, request);
     }
 
     @ExceptionHandler(value = AuthenticationException.class)
@@ -62,7 +69,6 @@ public class RestApiGlobalExceptionHandler extends ResponseEntityExceptionHandle
     @Override
     protected ResponseEntity<Object> handleBindException(
             BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
         return handleExceptionInternal(ex, Response.validationError(ex), headers, status, request);
     }
 }

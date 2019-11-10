@@ -39,9 +39,9 @@ public class KakaoOpenApiSearch {
         Objects.requireNonNull(dto, "BookDTO is null");
 
         KakaoBookSearchRequest request = KakaoBookSearchRequest.builder()
-                                                               .query(dto.getQuery())
-                                                               .page(dto.getPage())
-                                                               .size(dto.getDisplay())
+                .query(dto.getSearch())
+                .page(dto.getStart())
+                .size(dto.getLength())
                                                                .build();
 
         ResponseEntity<KakaoBookSearchResponse> responseEntity = openApiTemplate.bookSearch(request);
@@ -64,12 +64,12 @@ public class KakaoOpenApiSearch {
         SearchMeta meta = response.getMeta();
 
         if(!response.isDocument()){
-            return PageResponse.success(meta.getTotalCount(), 0, dto.getPage(), Collections.emptyList());
+            return PageResponse.success(meta.getTotalCount(), 0, dto.getStart(), Collections.emptyList());
         }
 
         List<BookInfo> books = response.convertDocument(this::documentToBookInfo);
 
-        int page = Objects.isNull(dto.getPage()) ? meta.getPageableCount() : dto.getPage();
+        int page = Objects.isNull(dto.getStart()) ? meta.getPageableCount() : dto.getStart();
 
         return PageResponse.success(meta.getTotalCount(), books.size(), page, books);
     }

@@ -52,7 +52,5 @@ public class KeyWordMapCacheManager implements KeyWordCacheManager {
         timer.start();
         top10 = newTop10();
         timer.end();
-
-        log.info("top10 rebuild finish - {} ms", timer.calc());
     }
 }

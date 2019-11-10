@@ -13,30 +13,30 @@ import java.util.Objects;
 public class BookDTO {
 
     @NotEmpty(message = "검색 키워드가 누락되었습니다.")
-    private String query;
+    private String search;
 
-    private Integer page;
+    private Integer start;
 
-    private Integer display;
+    private Integer length;
 
     @Builder
-    public BookDTO(String query, Integer page, Integer display) {
-        this.query = query;
-        this.page = page;
-        this.display = display;
+    public BookDTO(String search, Integer start, Integer length) {
+        this.search = search;
+        this.start = start;
+        this.length = length;
     }
 
-    @AssertTrue(message = "page는 0 ~ 100 범위로 요청 가능합니다.")
+    @AssertTrue(message = "start는 0 ~ 100 범위로 요청 가능합니다.")
     public boolean isValidPage() {
-        if (Objects.isNull(page) || page == 0) return true;
+        if (Objects.isNull(start) || start == 0) return true;
 
-        return page <= 100;
+        return start <= 100;
     }
 
-    @AssertTrue(message = "display는 0 ~ 50 범위로 요청 가능합니다.")
+    @AssertTrue(message = "length는 0 ~ 50 범위로 요청 가능합니다.")
     public boolean isValidDisplay() {
-        if (Objects.isNull(display) || display == 0) return true;
+        if (Objects.isNull(length) || length == 0) return true;
 
-        return display <= 50;
+        return length <= 50;
     }
 }
