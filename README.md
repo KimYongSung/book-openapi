@@ -44,10 +44,10 @@
 
 ## 2. 다운로드 경로
 
-네이버 클라우드 : http://naver.me/FNiDdnJj
-구글 드라이드 : https://drive.google.com/open?id=1HE4EUQQ99NBMFYC48t2t2OYcGw_ZvtaC
+* 네이버 클라우드 : http://naver.me/FNiDdnJj
 
-* 구글 드라이브의 경우 바이러스 검사로 인하여 대기 시간이 소요될 수 있습니다. 양해 부탁드립니다.
+* 구글 드라이드 : https://drive.google.com/open?id=1HE4EUQQ99NBMFYC48t2t2OYcGw_ZvtaC
+  * 구글 드라이브의 경우 바이러스 검사로 인하여 대기 시간이 소요될 수 있습니다. 양해 부탁드립니다.
 
 ## 3. 실행 옵션
 
