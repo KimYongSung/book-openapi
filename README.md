@@ -1,6 +1,6 @@
 # 카카오, 네이버 OpenAPI를 활용한 간단한 서비스
 
-## 사용 라이브러리
+## 1. 사용 라이브러리
 
 ### Spring Boot
 
@@ -39,12 +39,17 @@
 * com.h2database:h2
   * 인메모리 DB 사용하기 위해서 선택했습니다
 
-### 다운로드 경로
+* JQuery, bootstrap
+  * 프론트 개발을 위해서 사용하였습니다.
+
+## 2. 다운로드 경로
 
 구글 드라이드 : https://drive.google.com/open?id=1HE4EUQQ99NBMFYC48t2t2OYcGw_ZvtaC
 
 * 집에서 테스트시 바이러스 검사로 인하여 응답없는 대기 시간이 소요될 수 있습니다. 양해 부탁드립니다.
 
-### 실행 옵션
+github : https://github.com/KimYongSung/book-openapi/blob/master/openapi-0.0.1-SNAPSHOT.jar
+
+## 3. 실행 옵션
 
 java -jar openapi-0.0.1-SNAPSHOT.jar
