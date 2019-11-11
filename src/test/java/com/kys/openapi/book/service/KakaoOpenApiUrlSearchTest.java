@@ -57,7 +57,7 @@ public class KakaoOpenApiUrlSearchTest {
         // given
         BookDetailDTO dto = new BookDetailDTO("1157060595");
 
-        given(openApiTemplate.bookSearch(any())).willReturn(makeDetailResponse());
+        given(openApiTemplate.bookSearch(any())).willReturn(makeDetailNoDataResponse());
 
         // when
         DataResponse<BookInfo> response = kakaoOpenApiSearch.bookDetailSearch(dto);
@@ -69,8 +69,8 @@ public class KakaoOpenApiUrlSearchTest {
     public void 쿼리조회() throws IOException {
         // given
         BookDTO dto = BookDTO.builder()
-                .search("상실의시대")
-                .build();
+                             .search("상실의시대")
+                             .build();
 
         given(openApiTemplate.bookSearch(any())).willReturn(makeQueryResponse());
 
@@ -85,8 +85,8 @@ public class KakaoOpenApiUrlSearchTest {
     public void 쿼리조회_결과없음() throws IOException {
         // given
         BookDTO dto = BookDTO.builder()
-                .search("상실의시대")
-                .build();
+                             .search("상실의시대")
+                             .build();
 
         given(openApiTemplate.bookSearch(any())).willReturn(makeQueryNoDataResponse());
 

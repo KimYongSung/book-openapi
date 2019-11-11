@@ -1,7 +1,8 @@
 package com.kys.openapi.security.jwt;
 
-import com.kys.openapi.security.exception.InvalidJwtAuthenticationException;
 import com.kys.openapi.user.code.Role;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +38,7 @@ public class JwtTokenProviderTest {
         provider.validateToken(token);
     }
 
-    @Test(expected = InvalidJwtAuthenticationException.class)
+    @Test(expected = ExpiredJwtException.class)
     public void 토큰생성_만료시간_검증() throws InterruptedException {
 
         String token = provider.createToken("1", Arrays.asList(Role.USER.name()));
@@ -47,7 +48,7 @@ public class JwtTokenProviderTest {
         provider.validateToken(token);
     }
 
-    @Test(expected = InvalidJwtAuthenticationException.class)
+    @Test(expected = MalformedJwtException.class)
     public void 비정상토큰_검증(){
 
         provider.validateToken("asdjjioajsdljfojwefojasdiofjioweasf");

@@ -7,7 +7,6 @@ import com.kys.openapi.keyword.domain.repository.KeyWordRepository;
 import com.kys.openapi.keyword.domain.repository.KeyWordRepositorySupport;
 import com.kys.openapi.keyword.dto.KeyWordDTO;
 import com.querydsl.core.QueryResults;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;

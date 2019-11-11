@@ -14,11 +14,11 @@ import javax.validation.constraints.NotEmpty;
 public class UserDTO {
 
     @NotEmpty(message = "ID가 누락되었습니다.")
-    @Length(max = 64)
+    @Length(max = 64, message = "ID는 64자리수까지 가능합니다.")
     private String userId;
 
     @NotEmpty(message = "비밀번호가 누락되었습니다.")
-    @Length(max = 30)
+    @Length(max = 30, message = "비밀번호는 30자리수까지 가능합니다.")
     private String userPwd;
 
     @Builder
@@ -27,6 +27,10 @@ public class UserDTO {
         this.userPwd = userPwd;
     }
 
+    /**
+     * 비밀번호 암호화
+     * @param encoder {@link PasswordEncoder} 구현체
+     */
     public void encodePassword(PasswordEncoder encoder){
         this.userPwd = encoder.encode(this.userPwd);
     }

@@ -1,16 +1,13 @@
 package com.kys.openapi.keyword.cache;
 
-import com.kys.openapi.app.util.ExecuteTimer;
 import com.kys.openapi.keyword.domain.repository.KeyWordRepositorySupport;
 import com.kys.openapi.keyword.dto.KeyWordCallInfo;
 import com.querydsl.core.Tuple;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Slf4j
 public class KeyWordRdbCacheManager implements KeyWordCacheManager {
 
     private KeyWordRepositorySupport keyWordRepositorySupport;
@@ -50,12 +47,6 @@ public class KeyWordRdbCacheManager implements KeyWordCacheManager {
 
     @Scheduled(fixedRate = 1000 * 30)
     public void reload() {
-        ExecuteTimer timer = ExecuteTimer.newTimer();
-
-        timer.start();
         top10 = newTop10();
-        timer.end();
-
-        log.info("top10 rebuild finish - {} ms", timer.calc());
     }
 }

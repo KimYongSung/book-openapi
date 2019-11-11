@@ -53,8 +53,8 @@ public class KakaoOpenApiUrlRestTemplateTest {
         // given
         KakaoBookSearchRequest request = KakaoBookSearchRequest.builder()
                                                                .query("상실의시대")
-                .page(1)
-                .size(5)
+                                                               .page(1)
+                                                               .size(5)
                                                                .build();
 
         // when
@@ -66,6 +66,7 @@ public class KakaoOpenApiUrlRestTemplateTest {
         KakaoBookSearchResponse body            = response.getBody();
         SearchMeta meta                         = body.getMeta();
         List<KakaoBookSearchDocument> documents = body.getDocuments();
+
         assertThat(body.isNext()).isEqualTo(true);
     }
 

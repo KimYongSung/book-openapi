@@ -39,23 +39,23 @@ public class KakaoOpenApiSearch {
         Objects.requireNonNull(dto, "BookDTO is null");
 
         KakaoBookSearchRequest request = KakaoBookSearchRequest.builder()
-                .query(dto.getSearch())
-                .page(dto.getStart())
-                .size(dto.getLength())
+                                                               .query(dto.getSearch())
+                                                               .page(dto.getStart())
+                                                               .size(dto.getLength())
                                                                .build();
 
         ResponseEntity<KakaoBookSearchResponse> responseEntity = openApiTemplate.bookSearch(request);
 
-        return kakaoBookSearchResponseHandler(dto, responseEntity);
+        return kakaoBookSearchResponseHandler(request, responseEntity);
     }
 
     /**
      * 카카오 책 검색 결과 처리
-     * @param dto
+     * @param request
      * @param responseEntity
      * @return
      */
-    private PageResponse<BookInfo> kakaoBookSearchResponseHandler(BookDTO dto, ResponseEntity<KakaoBookSearchResponse> responseEntity) {
+    private PageResponse<BookInfo> kakaoBookSearchResponseHandler(KakaoBookSearchRequest request, ResponseEntity<KakaoBookSearchResponse> responseEntity) {
 
         httpStatusCheck(responseEntity);
 
@@ -64,12 +64,12 @@ public class KakaoOpenApiSearch {
         SearchMeta meta = response.getMeta();
 
         if(!response.isDocument()){
-            return PageResponse.success(meta.getTotalCount(), 0, dto.getStart(), Collections.emptyList());
+            return PageResponse.success(meta.getTotalCount(), 0, request.getPage(), Collections.emptyList());
         }
 
         List<BookInfo> books = response.convertDocument(this::documentToBookInfo);
 
-        return PageResponse.success(meta.getTotalCount(), books.size(), dto.getStart(), books);
+        return PageResponse.success(meta.getTotalCount(), books.size(), request.getPage(), books);
     }
 
     /**

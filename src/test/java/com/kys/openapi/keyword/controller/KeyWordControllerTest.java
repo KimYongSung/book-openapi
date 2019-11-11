@@ -30,8 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 @AutoConfigureMockMvc
+@SpringBootTest
 public class KeyWordControllerTest {
 
     @Autowired
@@ -45,7 +45,7 @@ public class KeyWordControllerTest {
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .build();
+                                 .build();
     }
 
     @Test
@@ -56,13 +56,15 @@ public class KeyWordControllerTest {
 
         // when
         final ResultActions actions = mockMvc.perform(get("/keyWord/top10"))
-                .andDo(MockMvcResultHandlers.print());
+                                             .andDo(MockMvcResultHandlers.print());
 
         // then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(ErrorCode.CD_0000.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.CD_0000.getMessage()))
-                .andExpect(jsonPath("$.data").isArray())
+               .andExpect(jsonPath("$.code").value(ErrorCode.CD_0000.getCode()))
+               .andExpect(jsonPath("$.message").value(ErrorCode.CD_0000.getMessage()))
+               .andExpect(jsonPath("$.data").isArray())
+               .andExpect(jsonPath("$.data[0].keyWord").hasJsonPath())
+               .andExpect(jsonPath("$.data[0].callCount").hasJsonPath())
         ;
     }
 
@@ -74,70 +76,72 @@ public class KeyWordControllerTest {
 
         // when
         final ResultActions actions = mockMvc.perform(get("/keyWord/history")
-                .param("start", "1")
-                .param("length", "3")
-        )
-                .andDo(MockMvcResultHandlers.print());
+                                             .param("start", "1")
+                                             .param("length", "3"))
+                                             .andDo(MockMvcResultHandlers.print());
 
         // then
         actions.andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(ErrorCode.CD_0000.getCode()))
-                .andExpect(jsonPath("$.message").value(ErrorCode.CD_0000.getMessage()))
-                .andExpect(jsonPath("$.data").isArray())
+               .andExpect(jsonPath("$.code").value(ErrorCode.CD_0000.getCode()))
+               .andExpect(jsonPath("$.message").value(ErrorCode.CD_0000.getMessage()))
+               .andExpect(jsonPath("$.data").isArray())
+               .andExpect(jsonPath("$.data[0].keyWordNo").hasJsonPath())
+               .andExpect(jsonPath("$.data[0].userNo").hasJsonPath())
+               .andExpect(jsonPath("$.data[0].keyWord").hasJsonPath())
+               .andExpect(jsonPath("$.data[0].searchDt").hasJsonPath())
         ;
     }
 
     @Test
-    public void 검색_요청파라미터_검증_page() throws Exception {
+    public void 검색_파라미터_검증_start() throws Exception {
 
         // given
         given(keyWordService.getKeyWordHistory(any(), any())).willReturn(pageHistorySuccess());
 
         // when
         final ResultActions actions = mockMvc.perform(get("/keyWord/history")
-                .param("start", "101")
-                .param("length", "3")
-        )
-                .andDo(MockMvcResultHandlers.print());
+                                             .param("start", "101")
+                                             .param("length", "3"))
+                                             .andDo(MockMvcResultHandlers.print());
 
         // then
         actions.andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.code").value(ErrorCode.CD_S001.getCode()))
+               .andExpect(jsonPath("$.code").value(ErrorCode.CD_S001.getCode()))
+               .andExpect(jsonPath("$.message").value("start는 1 ~ 100 범위로 요청 가능합니다."))
         ;
     }
 
 
     @Test
-    public void 검색_요청파라미터_검증_display() throws Exception {
+    public void 검색_파라미터_검증_length() throws Exception {
 
         // given
         given(keyWordService.getKeyWordHistory(any(), any())).willReturn(pageHistorySuccess());
 
         // when
         final ResultActions actions = mockMvc.perform(get("/keyWord/history")
-                .param("start", "1")
-                .param("length", "51")
-        )
-                .andDo(MockMvcResultHandlers.print());
+                                             .param("start", "1")
+                                             .param("length", "51"))
+                                             .andDo(MockMvcResultHandlers.print());
 
         // then
         actions.andExpect(status().is4xxClientError())
-                .andExpect(jsonPath("$.code").value(ErrorCode.CD_S001.getCode()))
+               .andExpect(jsonPath("$.code").value(ErrorCode.CD_S001.getCode()))
+               .andExpect(jsonPath("$.message").value("length는 1 ~ 50 범위로 요청 가능합니다."))
         ;
     }
 
     public PageResponse<KeyWordHistory> pageHistorySuccess() {
-        List<KeyWordHistory> datas = Arrays.asList(new KeyWordHistory(1l, "한국")
-                , new KeyWordHistory(1l, "독도")
-                , new KeyWordHistory(1l, "고기"));
-        return PageResponse.success(3, 3, 1, datas);
+        List<KeyWordHistory> data = Arrays.asList(new KeyWordHistory(1l, "한국")
+                                                 , new KeyWordHistory(1l, "독도")
+                                                 , new KeyWordHistory(1l, "고기"));
+        return PageResponse.success(data.size(), data.size(), 1, data);
     }
 
     public DataResponse<List<KeyWordCallInfo>> top10Success() {
         List<KeyWordCallInfo> data = Arrays.asList(new KeyWordCallInfo("test3", 3)
-                , new KeyWordCallInfo("test2", 2)
-                , new KeyWordCallInfo("test1", 1));
-
+                                                 , new KeyWordCallInfo("test2", 2)
+                                                 , new KeyWordCallInfo("test1", 1));
         return DataResponse.success(data);
     }
 }

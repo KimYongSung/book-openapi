@@ -1,6 +1,5 @@
 package com.kys.openapi.keyword.cache;
 
-import com.kys.openapi.app.util.ExecuteTimer;
 import com.kys.openapi.keyword.dto.KeyWordCallInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,18 +38,15 @@ public class KeyWordMapCacheManager implements KeyWordCacheManager {
      */
     private List<KeyWordCallInfo> newTop10() {
         return cache.values()
-                .stream()
-                .sorted()
-                .limit(10)
-                .collect(Collectors.toList());
+                    .stream()
+                    .sorted()
+                    .limit(10)
+                    .collect(Collectors.toList());
     }
 
-    @Scheduled(fixedRate = 1000 * 60)
+    @Scheduled(fixedRate = 1000 * 30)
     public void rebuild() {
-        ExecuteTimer timer = ExecuteTimer.newTimer();
-
-        timer.start();
         top10 = newTop10();
-        timer.end();
+        log.info("rebuild");
     }
 }
