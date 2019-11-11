@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class KeyWordPageTest {
 
     @Autowired
@@ -36,14 +38,22 @@ public class KeyWordPageTest {
         keyWordRepository.save(new KeyWordHistory(userNo, "안녕2"));
         keyWordRepository.save(new KeyWordHistory(userNo, "안녕3"));
         keyWordRepository.save(new KeyWordHistory(userNo, "안녕4"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕2"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕3"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕4"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕2"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕3"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕4"));
 
         // when
-        QueryResults<KeyWordHistory> results = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, PageRequest.of(0, 2));
+        QueryResults<KeyWordHistory> results = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, PageRequest.of(0, 10));
 
         // then
-        then(results.getTotal()).isEqualTo(4);
+        then(results.getTotal()).isEqualTo(12);
         then(results.getOffset()).isEqualTo(0);
-        then(results.getLimit()).isEqualTo(2);
+        then(results.getLimit()).isEqualTo(10);
 
         List<KeyWordHistory> keyWords = results.getResults();
 
@@ -63,14 +73,22 @@ public class KeyWordPageTest {
         keyWordRepository.save(new KeyWordHistory(userNo, "안녕2"));
         keyWordRepository.save(new KeyWordHistory(userNo, "안녕3"));
         keyWordRepository.save(new KeyWordHistory(userNo, "안녕4"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕2"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕3"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕4"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕2"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕3"));
+        keyWordRepository.save(new KeyWordHistory(userNo, "안녕4"));
 
         // when
-        QueryResults<KeyWordHistory> results = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, PageRequest.of(1, 2));
+        QueryResults<KeyWordHistory> results = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, PageRequest.of(1, 10));
 
         // then
-        then(results.getTotal()).isEqualTo(4);
-        then(results.getOffset()).isEqualTo(2);
-        then(results.getLimit()).isEqualTo(2);
+        then(results.getTotal()).isEqualTo(12);
+        then(results.getOffset()).isEqualTo(10);
+        then(results.getLimit()).isEqualTo(10);
 
         List<KeyWordHistory> keyWords = results.getResults();
 

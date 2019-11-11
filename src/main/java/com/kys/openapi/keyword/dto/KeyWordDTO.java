@@ -8,31 +8,31 @@ import java.util.Objects;
 
 public class KeyWordDTO {
 
-    private Integer page;
+    private Integer start;
 
-    private Integer display;
+    private Integer length;
 
     @Builder
-    public KeyWordDTO(Integer page, Integer display) {
-        this.page = page;
-        this.display = display;
+    public KeyWordDTO(Integer start, Integer length) {
+        this.start = start;
+        this.length = length;
     }
 
-    @AssertTrue(message = "page는 1 ~ 100 범위로 요청 가능합니다.")
+    @AssertTrue(message = "start는 1 ~ 100 범위로 요청 가능합니다.")
     public boolean isValidPage() {
-        if (Objects.isNull(page) || page == 0) return false;
+        if (Objects.isNull(start) || start == 0) return false;
 
-        return page <= 100;
+        return start <= 100;
     }
 
-    @AssertTrue(message = "display는 1 ~ 50 범위로 요청 가능합니다.")
+    @AssertTrue(message = "length는 1 ~ 50 범위로 요청 가능합니다.")
     public boolean isValidDisplay() {
-        if (Objects.isNull(display) || display == 0) return false;
+        if (Objects.isNull(length) || length == 0) return false;
 
-        return display <= 50;
+        return length <= 50;
     }
 
     public PageRequest toPageable() {
-        return PageRequest.of(page, display);
+        return PageRequest.of(start-1, length);
     }
 }

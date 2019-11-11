@@ -3,6 +3,7 @@ package com.kys.openapi.keyword.domain.repository;
 import com.kys.openapi.keyword.domain.KeyWordHistory;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -32,12 +33,10 @@ public class KeyWordRepositorySupport extends QuerydslRepositorySupport {
      * @return
      */
     public QueryResults<KeyWordHistory> findByUserNoOrderByKeywordDesc(Long userNo, Pageable pageable) {
-        return queryFactory.selectFrom(keyWordHistory)
-                           .where(keyWordHistory.userNo.eq(userNo))
-                           .offset(pageable.getOffset())
-                           .limit(pageable.getPageSize())
-                           .orderBy(keyWordHistory.keyWordNo.desc())
-                .fetchResults();
+        JPAQuery<KeyWordHistory> query = queryFactory.selectFrom(keyWordHistory)
+                                                    .where(keyWordHistory.userNo.eq(userNo))
+                                                    .orderBy(keyWordHistory.keyWordNo.desc());
+        return getQuerydsl().applyPagination(pageable, query).fetchResults();
     }
 
     /**

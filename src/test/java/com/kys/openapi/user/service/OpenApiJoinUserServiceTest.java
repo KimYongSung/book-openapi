@@ -10,6 +10,7 @@ import com.kys.openapi.user.dto.UserDTO;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OpenApiJoinUserServiceTest {
@@ -41,12 +43,8 @@ public class OpenApiJoinUserServiceTest {
     @Mock
     private JwtTokenProvider jwtTokenProvider;
 
+    @InjectMocks
     private OpenApiUserService userService;
-
-    @Before
-    public void init(){
-        userService = new OpenApiUserService(userRepository, userRepositorySupport, passwordEncoder, authenticationManager, jwtTokenProvider);
-    }
 
     public UserDTO makeUser(){
         return UserDTO.builder()
@@ -61,7 +59,7 @@ public class OpenApiJoinUserServiceTest {
         // given
         UserDTO userDTO = makeUser();
 
-        given(userRepositorySupport.findByUserIdAndUserPwd(eq(userDTO.getUserId()), eq(userDTO.getUserPwd())))
+        given(userRepositorySupport.findByUserId(eq(userDTO.getUserId())))
                                    .willReturn(Optional.of(userDTO.toEntity()));
 
         // when

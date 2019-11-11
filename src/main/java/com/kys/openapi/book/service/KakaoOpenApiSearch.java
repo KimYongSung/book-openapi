@@ -69,9 +69,7 @@ public class KakaoOpenApiSearch {
 
         List<BookInfo> books = response.convertDocument(this::documentToBookInfo);
 
-        int page = Objects.isNull(dto.getStart()) ? meta.getPageableCount() : dto.getStart();
-
-        return PageResponse.success(meta.getTotalCount(), books.size(), page, books);
+        return PageResponse.success(meta.getTotalCount(), books.size(), dto.getStart(), books);
     }
 
     /**

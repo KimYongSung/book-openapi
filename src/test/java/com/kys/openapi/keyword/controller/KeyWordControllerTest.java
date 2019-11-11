@@ -74,8 +74,8 @@ public class KeyWordControllerTest {
 
         // when
         final ResultActions actions = mockMvc.perform(get("/keyWord/history")
-                .param("page", "1")
-                .param("display", "3")
+                .param("start", "1")
+                .param("length", "3")
         )
                 .andDo(MockMvcResultHandlers.print());
 
@@ -95,8 +95,8 @@ public class KeyWordControllerTest {
 
         // when
         final ResultActions actions = mockMvc.perform(get("/keyWord/history")
-                .param("page", "101")
-                .param("display", "3")
+                .param("start", "101")
+                .param("length", "3")
         )
                 .andDo(MockMvcResultHandlers.print());
 
@@ -115,8 +115,8 @@ public class KeyWordControllerTest {
 
         // when
         final ResultActions actions = mockMvc.perform(get("/keyWord/history")
-                .param("page", "1")
-                .param("display", "51")
+                .param("start", "1")
+                .param("length", "51")
         )
                 .andDo(MockMvcResultHandlers.print());
 

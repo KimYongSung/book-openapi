@@ -1,23 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <#include "/layout/header.html">
 
     <title>책 검색 서비스</title>
 
-    <!-- Custom fonts for this template-->
-    <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-          rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="/static/css/sb-admin-2.css" rel="stylesheet">
     <link href="/static/vendor/pagination/pagination.css" rel="stylesheet">
 
 </head>
@@ -71,7 +60,6 @@
 
                                 </tbody>
                             </table>
-
                             <div id="dataTable"></div>
                         </div>
                     </div>
@@ -83,15 +71,7 @@
         </div>
         <!-- End of Main Content -->
 
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2019</span>
-                </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
+        <#include "/layout/footer.html">
 
     </div>
     <!-- End of Content Wrapper -->
@@ -106,6 +86,7 @@
 
 <#include "/layout/logout.html">
 
+<!--book detail modal-->
 <div class="modal fade" id="bookDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -117,7 +98,28 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div></div>
+              <div class="card mb-4 py-3 border-left-success">
+                <div id="bookThumbnail" class="card-body">
+                </div>
+                <div id="book-detail-container" class="card-body">
+                  <div class="text-lg mb-1">제목 : </div>
+                  <p id="bookTitle" class="mb-3 small"></p>
+                  <div class="text-lg mb-1">소개 : </div>
+                  <p id="bookContent" class="mb-3 small"></p>
+                  <div class="text-lg mb-1">ISBN : </div>
+                  <p id="bookIsbn" class="mb-3 small"></p>
+                  <div class="text-lg mb-1">저자 : </div>
+                  <p id="bookAuthor" class="mb-3 small"></p>
+                  <div class="text-lg mb-1">출판사 : </div>
+                  <p id="bookPublisher" class="mb-3 small"></p>
+                  <div class="text-lg mb-1">출판일 : </div>
+                  <p id="bookDatetime" class="mb-3 small"></p>
+                  <div class="text-lg mb-1">정가 : </div>
+                  <p id="bookPrice" class="mb-3 small"></p>
+                  <div class="text-lg mb-1">판매가 : </div>
+                  <p id="bookSalePrice" class="mb-3 small"></p>
+                </div>
+              </div>
             </div>
         </div>
     </div>
@@ -137,17 +139,15 @@
 <script src="/static/vendor/pagination/pagination.js"></script>
 
 <script type="text/javascript">
-
-
   var BookApp = {
 
     pageInit : function(){
       BookApp.event.init();
     }, 
+
     pagination : {
 
       load : function() {
-        var table = $('#dataTable');
         var search = $('#searchTxt');
 
         if(!search.val()){
@@ -155,47 +155,111 @@
           return;
         }
 
-        table.pagination({
+        BookApp.pagination.init(search);
+
+      },
+
+      init : function(search){
+
+        $('#dataTable').pagination({
           dataSource: '/search/book?search='+search.val(),
           locator: 'data',
           totalNumberLocator: function(response) {
               return response.totalSize;
           },
-          disableClassName: ".card div li text-align",
           alias: {
               pageNumber: 'start',
               pageSize: 'length'
           }, 
           ajax: {
             beforeSend: function(xhr) {
-              const token = localStorage.getItem('token');
-              xhr.setRequestHeader("Authorization", "Bearer " + token);
+              BookApp.event.initToken(xhr);
             },
             error: function(jqXHR, textStatus){
               BookApp.event.errorHandler(jqXHR, textStatus);
             }
           },
           callback: function (data, pagination) {
-              var dataHtml = '';
-
-              $.each(data, function (index, item) {
-                  dataHtml += '<tr>';
-                  dataHtml += '<th><a href="#" data-toggle="modal" data-target="#bookDetailModal">' + item.isbn + '</a></th>';
-                  dataHtml += '<th>' + item.title + '</th>';
-                  dataHtml += '<th>' + item.author + '</th>';
-                  dataHtml += '<th>' + item.publisher + '</th>';
-                  dataHtml += '<th>' + item.salePrice + '</th>';
-                  dataHtml += '</tr>';
-              });
-
-              $("#data-container").html(dataHtml);
+            BookApp.pagination.tableRender(data,pagination);
           }
         })
+      },
+
+      tableRender : function(data, pagination){
+        var dataHtml = '';
+
+        $.each(data, function (index, item) {
+            dataHtml += '<tr>';
+
+            
+            if(item.isbn){
+              dataHtml += '<th><a href="#" data-toggle="modal" onClick="BookApp.service.searchBookDetail(\''+ $.trim(item.isbn) +'\')" data-target="#bookDetailModal">' + item.isbn + '</a></th>';
+            }else{
+              dataHtml += '<th>' + item.isbn + '</th>';
+            }
+
+            dataHtml += '<th>' + item.title + '</th>';
+            dataHtml += '<th>' + item.author + '</th>';
+            dataHtml += '<th>' + item.publisher + '</th>';
+            dataHtml += '<th>' + item.salePrice + '</th>';
+            dataHtml += '</tr>';
+        });
+
+        $("#data-container").html(dataHtml);
       }
     },
-    service : {
-      goDetail : function(){
 
+    service : {
+      searchBookDetail : function(isbn){
+        $.ajax({
+          url:'/search/book/detail?isbn='+isbn,
+          type:'GET',
+          beforeSend: function(xhr) {
+            BookApp.event.initToken(xhr);
+          },
+          success: function(res){
+            BookApp.page.clearBookDetail();
+            BookApp.page.renderBookDetail(res.data);
+          },
+          error: function(jqXHR, textStatus, error){
+            BookApp.event.errorHandler(jqXHR, textStatus);
+          },
+          timeout: 2000
+        })
+
+      }
+    },
+    page : {
+      clearBookDetail : function(){
+        const bookThumbnail = $("#bookThumbnail");
+        bookThumbnail.children("img").remove();
+        
+        const bookDetailContainer = $("#book-detail-container");
+        bookDetailContainer.children("#bookTitle").empty();
+        bookDetailContainer.children("#bookContent").empty();
+        bookDetailContainer.children("#bookIsbn").empty();
+        bookDetailContainer.children("#bookAuthor").empty();
+        bookDetailContainer.children("#bookPublisher").empty();
+        bookDetailContainer.children("#bookDatetime").empty();
+        bookDetailContainer.children("#bookPrice").empty();
+        bookDetailContainer.children("#bookSalePrice").empty();
+
+      },
+      renderBookDetail : function(data){
+        const bookDetailContainer = $("#book-detail-container");
+
+        bookDetailContainer.children("#bookTitle").html(data.title);
+        bookDetailContainer.children("#bookContent").html(data.contents);
+        bookDetailContainer.children("#bookIsbn").html(data.isbn);
+        bookDetailContainer.children("#bookAuthor").html(data.author);
+        bookDetailContainer.children("#bookPublisher").html(data.publisher);
+        bookDetailContainer.children("#bookDatetime").html(data.datetime);
+        bookDetailContainer.children("#bookPrice").html(data.price);
+        bookDetailContainer.children("#bookSalePrice").html(data.salePrice);
+
+        const bookThumbnail = $("#bookThumbnail");
+
+        bookThumbnail.append("<img src="+data.thumbnail+">");
       }
     },
     event : {
@@ -205,22 +269,28 @@
         });
 
         $("#searchTxt").keyup(function(e){
-          if(e.keyCode == 13)  BookApp.pagination.load(); 
+          if(e.keyCode == 13) 
+            BookApp.pagination.load(); 
         });
 
       },
-      errorHandler : function(jqXHR, textStatus){
-            alert(jqXHR.responseJSON.message);
 
-            if(jqXHR.status == 401){
-              location.href = '/';
-              localStorage.removeItem('token');
-          }
+      errorHandler : function(jqXHR, textStatus){
+        alert(jqXHR.responseJSON.message);
+
+        if(jqXHR.status == 401){
+          location.href = '/';
+          localStorage.removeItem('token');
         }
+      },
+
+      initToken : function(xhr){
+        const token = localStorage.getItem('token');
+        xhr.setRequestHeader("Authorization", "Bearer " + token);
       }
+    },
+
   }
-  
-  
 
   $(document).ready(function() {
     try {

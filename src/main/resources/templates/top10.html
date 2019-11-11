@@ -5,7 +5,7 @@
 
   <#include "/layout/header.html">
 
-    <title>책 검색 이력</title>
+    <title>인기 키워드</title>
 
     <link href="/static/vendor/pagination/pagination.css" rel="stylesheet">
 
@@ -31,7 +31,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">검색 이력</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">인기 키워드</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -39,7 +39,7 @@
                                 <thead>
                                 <tr>
                                     <th>검색어</th>
-                                    <th>검색시간</th>
+                                    <th>검색횟수</th>
                                 </tr>
                                 </thead>
                                 <tbody id="data-container">
@@ -97,7 +97,7 @@
       init : function(search){
 
         $('#dataTable').pagination({
-          dataSource: '/keyWord/history',
+          dataSource: '/keyWord/top10',
           locator: 'data',
           totalNumberLocator: function(response) {
               return response.totalSize;
@@ -126,7 +126,7 @@
         $.each(data, function (index, item) {
             dataHtml += '<tr>';
             dataHtml += '<th>' + item.keyWord + '</th>';
-            dataHtml += '<th>' + item.searchDt + '</th>';
+            dataHtml += '<th>' + item.callCount + '</th>';
             dataHtml += '</tr>';
         });
 

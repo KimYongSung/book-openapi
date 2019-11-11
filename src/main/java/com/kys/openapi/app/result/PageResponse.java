@@ -5,6 +5,7 @@ import com.kys.openapi.app.constants.ErrorCode;
 import com.querydsl.core.QueryResults;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -29,15 +30,16 @@ public class PageResponse<T> extends Response {
         this.data = data;
     }
 
-    public static <T> PageResponse<T> success(int totalSize, int size, int page, List<T> datas) {
-        return new PageResponse<>(ErrorCode.CD_0000, totalSize, size, page, datas);
+    public static <T> PageResponse<T> success(int totalSize, int size, int page, List<T> data) {
+        return new PageResponse<>(ErrorCode.CD_0000, totalSize, size, page, data);
     }
 
-    public static <T> PageResponse<T> success(QueryResults<T> result) {
-        int total = (int) result.getTotal();
-        int limit = (int) result.getLimit();
-        int offset = (int) result.getOffset();
+    public static <T> PageResponse<T> success(QueryResults<T> result, PageRequest pageRequest) {
         List<T> results = result.getResults();
+        int limit = results.size();
+        int total = (int) result.getTotal();
+        /*int offset = (int) Math.floor((double) limit / (double) pageRequest.getPageSize());*/
+        int offset = (int) pageRequest.getPageNumber() + 1;
         return new PageResponse<T>(ErrorCode.CD_0000, total, limit, offset, results);
     }
 

@@ -9,6 +9,7 @@ import com.kys.openapi.keyword.dto.KeyWordCallInfo;
 import com.kys.openapi.keyword.dto.KeyWordDTO;
 import com.querydsl.core.QueryResults;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -31,9 +32,10 @@ public class OpenApiKeyWordService implements KeyWordService {
     public PageResponse<KeyWordHistory> getKeyWordHistory(KeyWordDTO keyWordDTO, Principal principal) {
 
         Long userNo = Long.parseLong(principal.getName());
+        PageRequest pageable = keyWordDTO.toPageable();
 
-        QueryResults<KeyWordHistory> queryResult = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, keyWordDTO.toPageable());
+        QueryResults<KeyWordHistory> queryResult = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, pageable);
 
-        return PageResponse.success(queryResult);
+        return PageResponse.success(queryResult, pageable);
     }
 }

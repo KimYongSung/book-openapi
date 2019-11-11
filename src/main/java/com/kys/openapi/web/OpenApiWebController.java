@@ -29,6 +29,16 @@ public class OpenApiWebController {
         return "index";
     }
 
+    @GetMapping(value = "/web/history")
+    public String history(Model model){
+        return "history";
+    }
+
+    @GetMapping(value = "/web/top10")
+    public String top10(Model model){
+        return "top10";
+    }
+
     @GetMapping(value = "/web/logout")
     public String logout(Model model) {
 
