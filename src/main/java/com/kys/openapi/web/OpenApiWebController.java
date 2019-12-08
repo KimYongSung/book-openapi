@@ -41,7 +41,6 @@ public class OpenApiWebController {
 
     @GetMapping(value = "/web/logout")
     public String logout(Model model) {
-
         return "login";
     }
 }

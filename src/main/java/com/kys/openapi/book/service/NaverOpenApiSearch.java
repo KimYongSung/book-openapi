@@ -38,9 +38,9 @@ public class NaverOpenApiSearch {
         Objects.requireNonNull(dto, "BookDTO is null");
 
         NaverBookSearchRequest request = NaverBookSearchRequest.builder()
-                .query(dto.getSearch())
-                .display(dto.getLength())
-                .start(dto.getStart())
+                                                               .query(dto.getSearch())
+                                                               .display(dto.getLength())
+                                                               .start(dto.getStart())
                                                                .build();
 
         ResponseEntity<NaverBookSearchResponse> responseEntity = openApiTemplate.bookSearch(request);

@@ -47,11 +47,11 @@ public class KeyWordRepositorySupport extends QuerydslRepositorySupport {
      */
     public List<Tuple> findKeyWordAndCountByGrouping(int max) {
         return queryFactory.select(keyWordHistory.keyWord, keyWordHistory.count())
-                .from(keyWordHistory)
-                .groupBy(keyWordHistory.keyWord)
-                .offset(0)
-                .limit(max)
-                .orderBy(keyWordHistory.count().desc())
-                .fetch();
+                           .from(keyWordHistory)
+                           .groupBy(keyWordHistory.keyWord)
+                           .offset(0)
+                           .limit(max)
+                           .orderBy(keyWordHistory.count().desc())
+                           .fetch();
     }
 }
