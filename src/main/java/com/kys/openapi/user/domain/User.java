@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -46,6 +47,14 @@ public class User {
         this.userPwd = userPwd;
         this.status = UserStatus.JOIN;
         this.regDt = LocalDateTime.now();
+    }
+
+    /**
+     * 비밀번호 암호화
+     * @param encoder {@link PasswordEncoder} 구현체
+     */
+    public void encodePassword(PasswordEncoder encoder){
+        this.userPwd = encoder.encode(this.userPwd);
     }
 
     /**

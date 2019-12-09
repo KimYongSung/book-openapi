@@ -46,9 +46,12 @@ public class OpenApiUserService implements UserService {
         if(user.isPresent())
             throw new AlreadyUserException();
 
-        dto.encodePassword(encoder);
 
-        userRepository.save(dto.toEntity());
+        User newUser = dto.toEntity();
+
+        newUser.encodePassword(encoder);
+
+        userRepository.save(newUser);
 
         return Response.success();
     }

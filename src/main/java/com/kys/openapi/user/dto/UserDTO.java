@@ -27,14 +27,6 @@ public class UserDTO {
         this.userPwd = userPwd;
     }
 
-    /**
-     * 비밀번호 암호화
-     * @param encoder {@link PasswordEncoder} 구현체
-     */
-    public void encodePassword(PasswordEncoder encoder){
-        this.userPwd = encoder.encode(this.userPwd);
-    }
-
     public User toEntity(){
         return User.builder()
                    .userId(userId)
