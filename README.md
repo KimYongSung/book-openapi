@@ -49,3 +49,8 @@ java -jar openapi-0.0.1-SNAPSHOT.jar
 ## 3. 접속 url
 
 http://localhost:8080/
+
+## 4. TODO
+
+* SPA로 변경 작업 
+* 네이버와 카카오 오픈 api 연동 부분 fegin 활용 검토
