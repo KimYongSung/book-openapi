@@ -18,7 +18,7 @@ import java.security.Principal;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "/search")
+@RequestMapping(value = "/api/search")
 public class BookSearchController {
 
     private final BookSearchService bookService;

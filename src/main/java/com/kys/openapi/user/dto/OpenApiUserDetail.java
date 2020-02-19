@@ -2,6 +2,8 @@ package com.kys.openapi.user.dto;
 
 import com.kys.openapi.user.code.Role;
 import com.kys.openapi.user.domain.User;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -68,5 +70,9 @@ public class OpenApiUserDetail implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Authentication newAuthentication(UserDTO dto){
+        return new UsernamePasswordAuthenticationToken(getUsername(), dto.getUserPwd());
     }
 }

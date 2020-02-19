@@ -14,7 +14,6 @@ public interface UserService {
      * @param dto
      * @return
      */
-    @Transactional
     Response joinUser(UserDTO dto);
 
     /**

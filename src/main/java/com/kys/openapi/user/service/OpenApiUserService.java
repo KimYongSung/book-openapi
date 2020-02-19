@@ -11,33 +11,35 @@ import com.kys.openapi.user.domain.repository.UserRepositorySupport;
 import com.kys.openapi.user.dto.OpenApiUserDetail;
 import com.kys.openapi.user.dto.TokenInfo;
 import com.kys.openapi.user.dto.UserDTO;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OpenApiUserService implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    private UserRepositorySupport userRepositorySupport;
+    private final UserRepositorySupport userRepositorySupport;
 
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    private JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * 회원 가입 처리
      * @param dto
      * @return
      */
+    @Transactional
     @Override
     public Response joinUser(UserDTO dto){
 
@@ -45,7 +47,6 @@ public class OpenApiUserService implements UserService {
 
         if(user.isPresent())
             throw new AlreadyUserException();
-
 
         User newUser = dto.toEntity();
 
@@ -64,12 +65,16 @@ public class OpenApiUserService implements UserService {
     @Override
     public DataResponse<TokenInfo> loginUser(UserDTO dto) {
 
-        OpenApiUserDetail user = OpenApiUserDetail.of(userRepositorySupport.findByUserId(dto.getUserId())
-                                                  .orElseThrow(UserNotFoundException::new));
+        User user = userRepositorySupport.findByUserId(dto.getUserId())
+                                         .orElseThrow(UserNotFoundException::new);
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), dto.getUserPwd()));
+        OpenApiUserDetail userDetail = OpenApiUserDetail.of(user);
 
-        String token = jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
+        Authentication authentication = userDetail.newAuthentication(dto);
+
+        authenticationManager.authenticate(authentication);
+
+        String token = jwtTokenProvider.createToken(userDetail.getUsername(), userDetail.getRoles());
 
         return DataResponse.success(TokenInfo.valueOf(token));
     }
