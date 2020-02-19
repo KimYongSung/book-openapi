@@ -35,5 +35,5 @@ out/
 node_modules/**
 **/node_modules/**
 dist/
-**/dist/
-package-lock.json
+**/dist/**
+**/package-lock.json
