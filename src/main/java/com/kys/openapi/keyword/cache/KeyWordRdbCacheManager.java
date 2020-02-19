@@ -45,7 +45,6 @@ public class KeyWordRdbCacheManager implements KeyWordCacheManager {
         return new KeyWordCallInfo(keyWord, callCount.intValue());
     }
 
-    @Scheduled(fixedRate = 1000 * 30)
     public void reload() {
         top10 = newTop10();
     }

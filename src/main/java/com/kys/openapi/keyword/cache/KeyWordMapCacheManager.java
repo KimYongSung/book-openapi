@@ -44,7 +44,6 @@ public class KeyWordMapCacheManager implements KeyWordCacheManager {
                     .collect(Collectors.toList());
     }
 
-    @Scheduled(fixedRate = 1000 * 30)
     public void rebuild() {
         top10 = newTop10();
         log.info("rebuild");
