@@ -32,6 +32,7 @@ public class OpenApiKeyWordService implements KeyWordService {
     public PageResponse<KeyWordHistory> getKeyWordHistory(KeyWordDTO keyWordDTO, Principal principal) {
 
         Long userNo = Long.parseLong(principal.getName());
+
         PageRequest pageable = keyWordDTO.toPageable();
 
         QueryResults<KeyWordHistory> queryResult = keyWordRepositorySupport.findByUserNoOrderByKeywordDesc(userNo, pageable);

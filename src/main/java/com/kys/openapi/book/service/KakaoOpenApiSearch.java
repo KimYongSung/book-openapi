@@ -15,6 +15,7 @@ import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchRequest;
 import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchResponse;
 import com.kys.openapi.thirdparty.kakao.search.common.SearchMeta;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -24,10 +25,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class KakaoOpenApiSearch {
 
-    private KakaoOpenApiRestTemplate openApiTemplate;
+    private final KakaoOpenApiRestTemplate openApiTemplate;
 
     /**
      * 카카오 openAPI 책 검색

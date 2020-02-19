@@ -1,3 +1,8 @@
+server:
+  servlet:
+    context-path: /api
+  port: 9000
+
 spring:
   devtools:
     livereload:

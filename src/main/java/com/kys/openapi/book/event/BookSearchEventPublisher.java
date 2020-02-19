@@ -2,6 +2,7 @@ package com.kys.openapi.book.event;
 
 import com.kys.openapi.book.dto.BookDTO;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +12,10 @@ import java.security.Principal;
  * 책 검색 이벤트 발행자
  */
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookSearchEventPublisher {
 
-    private ApplicationEventPublisher publisher;
+    private final ApplicationEventPublisher publisher;
 
     /**
      * 이벤트 발행
