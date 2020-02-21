@@ -1,8 +1,8 @@
 plugins {
 	id 'org.springframework.boot' version '2.1.9.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-	id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 	id 'com.moowork.node' version '1.3.1'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 	id 'java'
 }
 
@@ -12,31 +12,42 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-devtools'
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-	implementation 'com.querydsl:querydsl-apt'
-	implementation 'com.querydsl:querydsl-jpa'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+
+	compileOnly(
+			'org.projectlombok:lombok'
+	)
+
+	runtimeOnly(
+			'com.h2database:h2'
+	)
+
+	implementation(
+			'org.springframework.boot:spring-boot-starter-web'
+			,'org.springframework.boot:spring-boot-starter-freemarker'
+			,'org.springframework.boot:spring-boot-starter-data-jpa'
+			,'org.springframework.boot:spring-boot-starter-security'
+			,'org.springframework.boot:spring-boot-devtools'
+			,'io.jsonwebtoken:jjwt:0.9.1'
+			,'com.querydsl:querydsl-apt'
+			,'com.querydsl:querydsl-jpa'
+	)
+
+	testImplementation(
+			'org.springframework.boot:spring-boot-starter-test'
+			,'org.springframework.security:spring-security-test'
+	)
+
+	annotationProcessor(
+			'com.querydsl:querydsl-apt'
+			,'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final'
+			,'org.springframework.boot:spring-boot-configuration-processor'
+			,'org.projectlombok:lombok'
+	)
 }
 
 // QueryDSL 설정
@@ -48,20 +59,20 @@ querydsl {
 	querydslSourcesDir = querydslSrcDir
 }
 
-sourceSets {
-	main {
-		java {
-			srcDirs = ['src/main/java', querydslSrcDir]
-		}
-	}
-}
-
 compileQuerydsl{
 	options.annotationProcessorPath = configurations.querydsl
 }
 
 configurations {
 	querydsl.extendsFrom compileClasspath
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java', querydslSrcDir]
+		}
+	}
 }
 
 // Node 설정

@@ -18,7 +18,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping(value = "/api/keyWord")
+@RequestMapping(value = "/keyWord")
 public class KeyWordController {
 
     private KeyWordService keyWordService;

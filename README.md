@@ -50,7 +50,54 @@ java -jar openapi-0.0.1-SNAPSHOT.jar
 
 http://localhost:8080/
 
-## 4. TODO
+## 4. vue 설정 추가
+
+참고 : https://deockstory.tistory.com/26
+
+### 4.1 node plugin 설정 추가
+
+```text
+// node plugin 추가
+plugins {
+	...
+	id 'com.moowork.node' version '1.3.1'
+	...
+}
+
+// node 설정
+node {
+	version = '13.6.0'
+	npmVersion = '6.13.1'
+	download = false
+	workDir = file("./src/frontend")
+	nodeModulesDir = file("./src/frontend")
+}
+
+// npmInstall 실행 Config
+npmInstall {
+	args = ['install']
+	inputs.files file('package.json')
+	outputs.files file('node_modules')
+}
+
+task viewBuild(type: NpmTask, dependsOn: npmInstall){
+	description = "Build vue.js"
+	args = ['run','build']
+}
+
+processResources.dependsOn 'viewBuild'
+
+```
+
+### 4.2 vue cli로 개발환경 설정
+
+src 로 이동 후 명령어 실행 후 default 설정으로 구성
+
+```text
+vue create frontend
+``` 
+
+## 99. TODO
 
 * SPA로 변경 작업 
 * 네이버와 카카오 오픈 api 연동 부분 fegin 활용 검토
