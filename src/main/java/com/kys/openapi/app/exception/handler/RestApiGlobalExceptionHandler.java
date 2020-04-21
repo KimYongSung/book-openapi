@@ -63,12 +63,12 @@ public class RestApiGlobalExceptionHandler extends ResponseEntityExceptionHandle
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        return handleExceptionInternal(ex, Response.validationError(ex.getBindingResult()), headers, status, request);
+        return handleExceptionInternal(ex, Response.error(ex.getBindingResult()), headers, status, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleBindException(
             BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return handleExceptionInternal(ex, Response.validationError(ex), headers, status, request);
+        return handleExceptionInternal(ex, Response.error(ex), headers, status, request);
     }
 }

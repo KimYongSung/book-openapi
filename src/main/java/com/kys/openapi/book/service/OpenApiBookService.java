@@ -1,7 +1,6 @@
 package com.kys.openapi.book.service;
 
-import com.kys.openapi.app.result.DataResponse;
-import com.kys.openapi.app.result.PageResponse;
+import com.kys.openapi.app.result.Response;
 import com.kys.openapi.book.dto.BookDTO;
 import com.kys.openapi.book.dto.BookDetailDTO;
 import com.kys.openapi.book.dto.BookInfo;
@@ -27,9 +26,9 @@ public class OpenApiBookService implements BookSearchService {
     private BookSearchEventPublisher publisher;
 
     @Override
-    public PageResponse<BookInfo> searchBooks(BookDTO dto, Principal principal) {
+    public Response searchBooks(BookDTO dto, Principal principal) {
 
-        PageResponse<BookInfo> res = routingOpenApi.call(dto, kakaoSearch::bookSearch, naverSearch::bookSearch);
+        Response res = routingOpenApi.call(dto, kakaoSearch::bookSearch, naverSearch::bookSearch);
 
         publisher.publishEvent(dto, principal);
 
@@ -37,7 +36,7 @@ public class OpenApiBookService implements BookSearchService {
     }
 
     @Override
-    public DataResponse<BookInfo> searchBookDetail(BookDetailDTO dto, Principal principal) {
+    public Response searchBookDetail(BookDetailDTO dto, Principal principal) {
         return routingOpenApi.call(dto, kakaoSearch::bookDetailSearch, naverSearch::bookDetailSearch);
     }
 }

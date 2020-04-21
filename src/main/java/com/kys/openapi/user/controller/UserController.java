@@ -1,6 +1,5 @@
 package com.kys.openapi.user.controller;
 
-import com.kys.openapi.app.result.DataResponse;
 import com.kys.openapi.app.result.Response;
 import com.kys.openapi.user.dto.TokenInfo;
 import com.kys.openapi.user.dto.UserDTO;
@@ -40,7 +39,7 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/login")
-    public ResponseEntity<DataResponse<TokenInfo>> loginUser(@RequestBody @Valid UserDTO userDTO){
+    public ResponseEntity<Response> loginUser(@RequestBody @Valid UserDTO userDTO){
         return ResponseEntity.ok(userService.loginUser(userDTO));
     }
     

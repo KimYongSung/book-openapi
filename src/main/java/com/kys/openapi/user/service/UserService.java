@@ -1,11 +1,7 @@
 package com.kys.openapi.user.service;
 
-import com.kys.openapi.app.result.DataResponse;
 import com.kys.openapi.app.result.Response;
-import com.kys.openapi.user.dto.TokenInfo;
 import com.kys.openapi.user.dto.UserDTO;
-
-import javax.transaction.Transactional;
 
 public interface UserService {
 
@@ -21,5 +17,5 @@ public interface UserService {
      * @param dto
      * @return
      */
-    DataResponse<TokenInfo> loginUser(UserDTO dto);
+    Response loginUser(UserDTO dto);
 }

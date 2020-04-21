@@ -2,8 +2,7 @@ package com.kys.openapi.book.service;
 
 import com.kys.openapi.app.exception.ThirdPartyApiResultFailException;
 import com.kys.openapi.app.exception.ThirdPartyApiResultNotFoundException;
-import com.kys.openapi.app.result.DataResponse;
-import com.kys.openapi.app.result.PageResponse;
+import com.kys.openapi.app.result.Response;
 import com.kys.openapi.app.util.StringUtil;
 import com.kys.openapi.book.dto.BookDTO;
 import com.kys.openapi.book.dto.BookDetailDTO;
@@ -33,7 +32,7 @@ public class NaverOpenApiSearch {
      * @param dto
      * @return
      */
-    public PageResponse<BookInfo> bookSearch(BookDTO dto) {
+    public Response bookSearch(BookDTO dto) {
 
         Objects.requireNonNull(dto, "BookDTO is null");
 
@@ -53,18 +52,18 @@ public class NaverOpenApiSearch {
      * @param responseEntity
      * @return
      */
-    private PageResponse<BookInfo> bookSearchResponseHandler(ResponseEntity<NaverBookSearchResponse> responseEntity) {
+    private Response bookSearchResponseHandler(ResponseEntity<NaverBookSearchResponse> responseEntity) {
 
         httpStatusCheck(responseEntity);
 
         NaverBookSearchResponse.Channel channel = responseEntity.getBody().getChannel();
 
         if(!channel.isItems())
-            return PageResponse.success(channel.getTotal(), 0, channel.getStart(), Collections.emptyList());
+            return Response.emptyPage(channel.getStart());
 
         List<BookInfo> books = channel.convertItem(this::bookItemToBookInfo);
 
-        return PageResponse.success(channel.getTotal(), channel.getDisplay(), channel.getStart(), books);
+        return Response.success(channel.getTotal(), channel.getDisplay(), channel.getStart(), books);
     }
 
     /**
@@ -72,7 +71,7 @@ public class NaverOpenApiSearch {
      * @param dto
      * @return
      */
-    public DataResponse<BookInfo> bookDetailSearch(BookDetailDTO dto) {
+    public Response bookDetailSearch(BookDetailDTO dto) {
 
         Objects.requireNonNull(dto, "BookDetailDTO is null");
 
@@ -90,7 +89,7 @@ public class NaverOpenApiSearch {
      * @param responseEntity
      * @return
      */
-    private DataResponse<BookInfo> bookDetailSearchResponseHandler(ResponseEntity<NaverBookSearchResponse> responseEntity) {
+    private Response bookDetailSearchResponseHandler(ResponseEntity<NaverBookSearchResponse> responseEntity) {
 
         httpStatusCheck(responseEntity);
 
@@ -99,7 +98,7 @@ public class NaverOpenApiSearch {
         if(!channel.isItems())
             throw new ThirdPartyApiResultNotFoundException();
 
-        return DataResponse.success(bookItemToBookInfo(channel.getItems().get(0)));
+        return Response.success(bookItemToBookInfo(channel.getItems().get(0)));
     }
 
     /**

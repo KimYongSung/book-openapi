@@ -2,7 +2,6 @@ package com.kys.openapi.user.service;
 
 import com.kys.openapi.app.exception.AlreadyUserException;
 import com.kys.openapi.app.exception.UserNotFoundException;
-import com.kys.openapi.app.result.DataResponse;
 import com.kys.openapi.app.result.Response;
 import com.kys.openapi.security.jwt.JwtTokenProvider;
 import com.kys.openapi.user.domain.User;
@@ -63,7 +62,7 @@ public class OpenApiUserService implements UserService {
      * @return
      */
     @Override
-    public DataResponse<TokenInfo> loginUser(UserDTO dto) {
+    public Response loginUser(UserDTO dto) {
 
         User user = userRepositorySupport.findByUserId(dto.getUserId())
                                          .orElseThrow(UserNotFoundException::new);
@@ -76,6 +75,6 @@ public class OpenApiUserService implements UserService {
 
         String token = jwtTokenProvider.createToken(userDetail.getUsername(), userDetail.getRoles());
 
-        return DataResponse.success(TokenInfo.valueOf(token));
+        return Response.success(TokenInfo.valueOf(token));
     }
 }

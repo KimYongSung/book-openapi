@@ -2,8 +2,7 @@ package com.kys.openapi.book.service;
 
 import com.kys.openapi.app.exception.ThirdPartyApiResultFailException;
 import com.kys.openapi.app.exception.ThirdPartyApiResultNotFoundException;
-import com.kys.openapi.app.result.DataResponse;
-import com.kys.openapi.app.result.PageResponse;
+import com.kys.openapi.app.result.Response;
 import com.kys.openapi.app.util.StringUtil;
 import com.kys.openapi.book.dto.BookDTO;
 import com.kys.openapi.book.dto.BookDetailDTO;
@@ -14,13 +13,11 @@ import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchDocument;
 import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchRequest;
 import com.kys.openapi.thirdparty.kakao.search.book.KakaoBookSearchResponse;
 import com.kys.openapi.thirdparty.kakao.search.common.SearchMeta;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +32,7 @@ public class KakaoOpenApiSearch {
      * @param dto
      * @return
      */
-    public PageResponse<BookInfo> bookSearch(BookDTO dto) {
+    public Response bookSearch(BookDTO dto) {
 
         Objects.requireNonNull(dto, "BookDTO is null");
 
@@ -56,7 +53,7 @@ public class KakaoOpenApiSearch {
      * @param responseEntity
      * @return
      */
-    private PageResponse<BookInfo> kakaoBookSearchResponseHandler(KakaoBookSearchRequest request, ResponseEntity<KakaoBookSearchResponse> responseEntity) {
+    private Response kakaoBookSearchResponseHandler(KakaoBookSearchRequest request, ResponseEntity<KakaoBookSearchResponse> responseEntity) {
 
         httpStatusCheck(responseEntity);
 
@@ -65,12 +62,12 @@ public class KakaoOpenApiSearch {
         SearchMeta meta = response.getMeta();
 
         if(!response.isDocument()){
-            return PageResponse.success(meta.getTotalCount(), 0, request.getPage(), Collections.emptyList());
+            return Response.emptyPage(request.getSize());
         }
 
         List<BookInfo> books = response.convertDocument(this::documentToBookInfo);
 
-        return PageResponse.success(meta.getTotalCount(), books.size(), request.getPage(), books);
+        return Response.success(meta.getTotalCount(), books.size(), request.getPage(), books);
     }
 
     /**
@@ -78,7 +75,7 @@ public class KakaoOpenApiSearch {
      * @param dto
      * @return
      */
-    public DataResponse<BookInfo> bookDetailSearch(BookDetailDTO dto) {
+    public Response bookDetailSearch(BookDetailDTO dto) {
 
         Objects.requireNonNull(dto, "BookDetailDTO is null");
 
@@ -97,7 +94,7 @@ public class KakaoOpenApiSearch {
      * @param responseEntity
      * @return
      */
-    private DataResponse<BookInfo> kakaoBookDetailSearchResponseHandler(ResponseEntity<KakaoBookSearchResponse> responseEntity) {
+    private Response kakaoBookDetailSearchResponseHandler(ResponseEntity<KakaoBookSearchResponse> responseEntity) {
 
         httpStatusCheck(responseEntity);
 
@@ -107,7 +104,7 @@ public class KakaoOpenApiSearch {
             throw new ThirdPartyApiResultNotFoundException();
         }
 
-        return DataResponse.success(documentToBookInfo(response.getDocuments().get(0)));
+        return Response.success(documentToBookInfo(response.getDocuments().get(0)));
     }
 
     private void httpStatusCheck(ResponseEntity<KakaoBookSearchResponse> responseEntity) {
